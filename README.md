@@ -28,6 +28,7 @@ clignotants). Quand un danger apparaît, il doit cliquer dessus avant la fin d'u
 ## Documentation
 
 - [Feuille de route](docs/ROADMAP.md)
+- [Concurrence et différenciateurs](docs/benchmark.md)
 - [Architecture](docs/ARCHITECTURE.md)
 - [Décisions (ADR)](docs/DECISIONS.md)
 - [Licences](docs/LICENSES.md) et [registre des assets](docs/ASSETS.md)

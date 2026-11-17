@@ -2,6 +2,9 @@
   "schemaVersion": 0,
   "id": "pedestrian-crossing-001",
   "title": { "fr": "Carrefour urbain, piéton pressé" },
+  "kind": "exam",
+  "generation": { "scenario": "urban-crossroads-pedestrian", "seed": 42, "generatorVersion": "0.1.0" },
+  "conditions": { "timeOfDay": "dusk", "weather": "rain", "environment": "urban" },
   "video": {
     "fps": 30,
     "width": 1920,
@@ -22,6 +25,7 @@
     {
       "id": "h1",
       "type": "pedestrian_crossing",
+      "tags": ["vulnerable_user", "windshield"],
       "label": { "fr": "Piéton qui traverse" },
       "explanation": {
         "fr": "Le piéton sur le trottoir de gauche regarde son téléphone et s'engage sans regarder. Il fallait le repérer dès qu'il s'approchait du bord."
@@ -38,6 +42,37 @@
             { "frame": 450, "visible": false }
           ]
         }
+      ]
+    }
+  ],
+  "decoys": [
+    {
+      "id": "d1",
+      "type": "decoy_pedestrian_static",
+      "explanation": {
+        "fr": "La personne à droite attend le bus, dos à la route : elle ne va pas traverser."
+      },
+      "tracks": [
+        {
+          "view": "windshield",
+          "keyframes": [
+            { "frame": 120, "polygon": [[0.78, 0.50], [0.80, 0.50], [0.80, 0.60], [0.78, 0.60]] },
+            { "frame": 330, "polygon": [[0.90, 0.47], [0.94, 0.47], [0.94, 0.66], [0.90, 0.66]] },
+            { "frame": 360, "visible": false }
+          ]
+        }
+      ]
+    }
+  ],
+  "predictions": [
+    {
+      "pauseFrame": 305,
+      "hazardId": "h1",
+      "question": { "fr": "Que va probablement faire le piéton à gauche ?" },
+      "choices": [
+        { "text": { "fr": "Traverser sans regarder" }, "correct": true },
+        { "text": { "fr": "Rester sur le trottoir" }, "correct": false },
+        { "text": { "fr": "Faire signe de passer" }, "correct": false }
       ]
     }
   ]

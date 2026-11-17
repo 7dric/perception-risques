@@ -10,6 +10,32 @@
     "schemaVersion": { "const": 0 },
     "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" },
     "title": { "$ref": "#/$defs/i18nText" },
+    "kind": {
+      "description": "exam: full clip usable in an exam series. short: ~10 s single-hazard exercise (D4).",
+      "enum": ["exam", "short"],
+      "default": "exam"
+    },
+    "generation": {
+      "description": "How the clip was produced, so it can be rendered again identically (D1).",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["scenario", "seed"],
+      "properties": {
+        "scenario": { "type": "string", "description": "Scenario template id (Godot scene or YAML file)" },
+        "seed": { "type": "integer", "minimum": 0 },
+        "generatorVersion": { "type": "string" }
+      }
+    },
+    "conditions": {
+      "description": "Rendering conditions (D5). See docs/hazard-catalog.md.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "timeOfDay": { "enum": ["day", "dawn", "dusk", "night"] },
+        "weather": { "enum": ["clear", "overcast", "rain", "fog", "low_sun", "snow"] },
+        "environment": { "enum": ["urban", "residential", "rural", "expressway", "roundabout", "roadworks"] }
+      }
+    },
     "video": {
       "type": "object",
       "additionalProperties": false,
@@ -47,7 +73,18 @@
     },
     "hazards": {
       "type": "array",
+      "maxItems": 3,
       "items": { "$ref": "#/$defs/hazard" }
+    },
+    "decoys": {
+      "description": "Road users that draw the eye but are not hazards. A click on them is a lost click.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/decoy" }
+    },
+    "predictions": {
+      "description": "'Pause: what happens next?' questions (D4).",
+      "type": "array",
+      "items": { "$ref": "#/$defs/prediction" }
     }
   },
   "$defs": {
@@ -117,6 +154,12 @@
       "properties": {
         "id": { "type": "string" },
         "type": { "type": "string", "description": "See docs/hazard-catalog.md" },
+        "tags": {
+          "description": "Extra categories for adaptive training (D2), e.g. mirror, vulnerable_user, priority.",
+          "type": "array",
+          "items": { "type": "string" },
+          "uniqueItems": true
+        },
         "label": { "$ref": "#/$defs/i18nText" },
         "explanation": { "$ref": "#/$defs/i18nText" },
         "window": {
@@ -130,7 +173,7 @@
           }
         },
         "idealFrame": {
-          "description": "Earliest moment a careful driver should notice the hazard.",
+          "description": "Earliest moment a careful driver should notice the hazard. Used for the precision score (D3).",
           "type": "integer",
           "minimum": 0
         },
@@ -138,6 +181,44 @@
           "type": "array",
           "items": { "$ref": "#/$defs/track" },
           "minItems": 1
+        }
+      }
+    },
+    "decoy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "type", "tracks", "explanation"],
+      "properties": {
+        "id": { "type": "string" },
+        "type": { "type": "string", "description": "See docs/hazard-catalog.md (decoy_*)" },
+        "explanation": { "$ref": "#/$defs/i18nText" },
+        "tracks": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/track" },
+          "minItems": 1
+        }
+      }
+    },
+    "prediction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["pauseFrame", "question", "choices"],
+      "properties": {
+        "pauseFrame": { "type": "integer", "minimum": 0 },
+        "hazardId": { "type": "string", "description": "Hazard this question is about, if any" },
+        "question": { "$ref": "#/$defs/i18nText" },
+        "choices": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["text", "correct"],
+            "properties": {
+              "text": { "$ref": "#/$defs/i18nText" },
+              "correct": { "type": "boolean" }
+            }
+          }
         }
       }
     }

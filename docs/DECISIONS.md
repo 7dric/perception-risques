@@ -32,6 +32,8 @@ par une nouvelle qui y fait référence.
 
 ## ADR-005 — Scénarios : éditeur d'abord, données ensuite
 
+> Remplacée en partie par ADR-010 : la génération arrive plus tôt.
+
 - **Décision** : en J1 à J5, un scénario est une scène Godot. En J6, un format YAML permet
   l'assemblage et les variations automatiques.
 
@@ -48,3 +50,30 @@ par une nouvelle qui y fait référence.
 ## ADR-008 — Périmètre de la V1
 
 - **Décision** : mode examen et correction expliquée. Comptes, suivi et paiement plus tard, via Odoo.
+
+## ADR-009 — Positionnement face à la concurrence
+
+- **Contexte** : MaTheorie et TheoRoute proposent déjà la 3D, l'écran identique à l'examen, le
+  format officiel et une correction au ralenti (voir [benchmark.md](benchmark.md)).
+- **Décision** : ces fonctions sont un minimum. Le projet se distingue par cinq points :
+  D1 volume quasi illimité par génération, D2 entraînement adaptatif, D3 note de précision
+  (délai par rapport au moment idéal), D4 exercices courts, D5 conditions variées.
+- **Conséquences** : la feuille de route est réordonnée pour livrer D3 en J2, D1 et D5 en J4,
+  D4 en J5, D2 en J6.
+
+## ADR-010 — Scénarios paramétrables dès J1, générateur en J4
+
+- **Contexte** : D1 et D5 reposent sur la génération ; la reporter obligerait à refaire les
+  premiers scénarios.
+- **Décision** : dès J1, chaque scénario prend une graine aléatoire, un moment du jour et une
+  météo. Le générateur à partir de fichiers YAML arrive en J4 (au lieu de J6).
+- **Conséquences** : un peu plus de travail en J1 ; le format d'annotation enregistre la graine
+  et les conditions de chaque clip.
+
+## ADR-011 — Pièges annotés comme les dangers
+
+- **Contexte** : à l'examen, un clic sur un usager qui n'est pas un danger fait perdre un clic.
+  Les concurrents placent des pièges dans leurs films.
+- **Décision** : les pièges sont annotés avec des pistes comme les dangers, dans une liste
+  `decoys` séparée. Ils servent à la correction (« ce n'était pas un danger, voici pourquoi »)
+  et aux statistiques de D2.

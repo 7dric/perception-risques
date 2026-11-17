@@ -23,5 +23,27 @@ Priorité : P1 pour J1 et J4, P2 pour plus tard.
 | `animal_crossing` | Animal sur la route (campagne) | Pare-brise | P2 |
 | `roadworks_worker` | Ouvrier ou obstacle dans une zone de travaux | Pare-brise | P2 |
 
+## Pièges
+
+Usagers qui attirent l'œil sans être un danger. Annotés dans `decoys` (ADR-011).
+
+| Type | Description |
+|---|---|
+| `decoy_pedestrian_static` | Piéton immobile sur le trottoir, qui ne regarde pas la route |
+| `decoy_car_stopped` | Voiture bien arrêtée au cédez-le-passage ou au stop |
+| `decoy_cyclist_lane` | Cycliste qui roule droit sur sa piste séparée |
+| `decoy_parked_car` | Voiture garée, sans conducteur |
+
+## Conditions (D5)
+
+Chaque clip enregistre ses conditions dans `conditions`, pour varier les examens et suivre les
+erreurs par condition (D2).
+
+| Champ | Valeurs |
+|---|---|
+| `timeOfDay` | `day`, `dawn`, `dusk`, `night` |
+| `weather` | `clear`, `overcast`, `rain`, `fog`, `low_sun`, `snow` |
+| `environment` | `urban`, `residential`, `rural`, `expressway`, `roundabout`, `roadworks` |
+
 À valider avec les règles officielles : un « danger » est-il seulement ce qui oblige à réagir
 (freiner, dévier), ou aussi un danger potentiel ?

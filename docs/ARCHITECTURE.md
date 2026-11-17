@@ -55,6 +55,18 @@ Le projet a deux parties reliées par un seul contrat : le **format d'annotation
 - **Langues** : tous les textes passent par des clés de traduction dès le départ ; seul le français
   est rempli au début.
 
+## Différenciateurs dans l'architecture
+
+Voir [benchmark.md](benchmark.md).
+
+| # | Où ça se joue |
+|---|---|
+| D1 Volume | Scénarios paramétrés par une graine (J1), générateur YAML et rendu en lot (J3, J4) ; `generation` dans le JSON |
+| D2 Adaptatif | `type` et `tags` des dangers, `conditions` du clip, historique des réponses côté lecteur |
+| D3 Précision | `idealFrame` de chaque danger ; le moteur de score calcule le délai, à côté du barème officiel |
+| D4 Exercices courts | Clips `kind: "short"` et questions `predictions` (pause sur une image) |
+| D5 Conditions | Lumière, météo et décors paramétrables dans Godot ; `conditions` dans le JSON |
+
 ## Données
 
 | Fichier | Rôle |
