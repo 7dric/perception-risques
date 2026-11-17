@@ -5,7 +5,7 @@ Chaque jalon se termine par un livrable vérifiable. Statut : ⬜ à faire · �
 Les jalons sont ordonnés pour livrer au plus tôt nos différenciateurs D1 à D5
 (voir [benchmark.md](benchmark.md)).
 
-## J0 — Fondations 🟡
+## J0 — Fondations ✅
 
 - ✅ Décisions de départ (voir [DECISIONS.md](DECISIONS.md))
 - ✅ Architecture, licences, arborescence du dépôt
@@ -13,7 +13,11 @@ Les jalons sont ordonnés pour livrer au plus tôt nos différenciateurs D1 à D
 - ✅ Analyse de la concurrence et choix des différenciateurs (voir [benchmark.md](benchmark.md))
 - ✅ Règles de l'examen retenues (voir [exam-rules.md](exam-rules.md), ADR-013)
 - ✅ Niveau de rendu : soigné et proche de l'examen officiel (ADR-012)
-- ⬜ Catalogue des dangers relu et priorisé (voir [hazard-catalog.md](hazard-catalog.md))
+- ✅ Environnement de travail : Godot 4.7, FFmpeg (AV1, VP9), Node.js, Vite, Vitest, Playwright,
+  validation du schéma, diagnostic `npm run check-env` (voir [SETUP.md](SETUP.md), ADR-016)
+- ✅ Catalogue des dangers relu et priorisé : 29 dangers, 11 pièges, étiquettes, fenêtres
+  (voir [hazard-catalog.md](hazard-catalog.md), ADR-017)
+- ✅ Schéma v0 relu, exemple validé par `npm run validate:schema`
 
 **Terminé quand** : catalogue relu, schéma v0 relu.
 

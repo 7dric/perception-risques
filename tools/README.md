@@ -9,8 +9,10 @@ Prévus au jalon J3 :
 | `validate` | Valide les JSON contre `schema/clip.schema.json` et produit une vidéo de contrôle avec les polygones dessinés |
 | `manifest` | Génère `content/manifest.json` |
 
-Validation du schéma dès maintenant :
+Déjà disponibles :
 
-```
-npx ajv-cli validate --spec=draft2020 -s schema/clip.schema.json -d "schema/examples/*.json"
-```
+| Script | Rôle |
+|---|---|
+| `check-env.mjs` | Vérifie l'environnement (`npm run check-env`) |
+| `validate-schema.mjs` | Valide les JSON contre le schéma (`npm run validate:schema [fichiers]`) |
+| `winrun.cmd` | Lance une commande sous Windows depuis WSL (voir docs/SETUP.md) |

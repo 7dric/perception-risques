@@ -1,0 +1,17 @@
+{
+  "name": "perception-risques",
+  "private": true,
+  "description": "Entraîneur au test de perception des risques du permis belge",
+  "type": "module",
+  "engines": { "node": ">=24" },
+  "workspaces": ["web"],
+  "scripts": {
+    "check-env": "node tools/check-env.mjs",
+    "validate:schema": "node tools/validate-schema.mjs",
+    "dev": "npm run dev -w web",
+    "test": "npm run validate:schema && npm test -w web"
+  },
+  "devDependencies": {
+    "ajv": "8.20.0"
+  }
+}

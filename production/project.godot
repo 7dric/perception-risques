@@ -1,0 +1,24 @@
+; Engine configuration file.
+; Production tool: renders scenarios to video + annotation JSON (see docs/ARCHITECTURE.md).
+
+config_version=5
+
+[application]
+
+config/name="Perception des risques — production"
+config/description="Scénarios 3D rendus en vidéos et annotations JSON"
+config/features=PackedStringArray("4.7", "Forward Plus")
+
+[display]
+
+window/size/viewport_width=1920
+window/size/viewport_height=1080
+
+[physics]
+
+common/physics_ticks_per_second=30
+
+[rendering]
+
+renderer/rendering_method="forward_plus"
+anti_aliasing/quality/msaa_3d=2

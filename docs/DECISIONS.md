@@ -135,3 +135,25 @@ par une nouvelle qui y fait référence.
 - **Décision** : voir [privacy.md](privacy.md). L'image webcam est traitée dans le navigateur,
   jamais envoyée ni enregistrée. Activation volontaire, consentement clair. Seules des
   statistiques sont conservées, effaçables par l'élève.
+
+## ADR-016 — Outillage entièrement sous Windows
+
+- **Contexte** : Godot a besoin du GPU (Vulkan), indisponible correctement sous WSL. Le dépôt est
+  sur `C:`. Le réseau de WSL corrompt les gros téléchargements HTTPS, ce qui empêche
+  `npm install`. Sous `/mnt/c`, Vite ne voit pas les fichiers modifiés depuis un éditeur Windows.
+- **Décision** : Godot, FFmpeg et Node.js sont installés sous Windows (winget). WSL ne sert qu'à
+  appeler ces outils via `tools/winrun.cmd`. Détails dans [SETUP.md](SETUP.md).
+- **Conséquences** : les scripts de `tools/` sont écrits en Node.js (pas en bash) pour tourner
+  sous Windows ; `npm run check-env` vérifie l'installation.
+
+## ADR-017 — Catalogue des dangers validé
+
+- **Contexte** : J0 demandait un catalogue relu et priorisé avant de produire des scénarios.
+- **Décision** : le catalogue de [hazard-catalog.md](hazard-catalog.md) est validé sans
+  modification : définition du danger (réaction obligatoire, danger qui se concrétise), règles de
+  fenêtre (premier indice, environ 2 s avant le conflit, 3 à 5 s) et de moment idéal (0,3 à 1 s
+  après le début), 29 dangers dont 10 en P1, 11 pièges et leurs jumeaux, 1 à 2 pièges par clip,
+  liste fermée d'étiquettes, composition provisoire d'un examen, situations belges.
+- **Conséquences** : les identifiants `type` sont figés ; un clic avant la fenêtre est un clic
+  perdu ; l'ancien type `bus_stop` devient `bus_stop_pedestrian`. Toute modification du
+  catalogue passe par une nouvelle ADR. J0 est terminé.

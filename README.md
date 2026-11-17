@@ -25,8 +25,19 @@ clignotants). Quand un danger apparaît, il doit cliquer dessus avant la fin d'u
 | `web/` | Lecteur élève (TypeScript + Vite) |
 | `content/` | Sorties générées : vidéos et JSON (hors Git) |
 
+## Démarrage
+
+Installations et commandes : [docs/SETUP.md](docs/SETUP.md). En bref, sous Windows :
+
+```powershell
+npm install
+npm run check-env
+npm test
+```
+
 ## Documentation
 
+- [Environnement de travail](docs/SETUP.md)
 - [Feuille de route](docs/ROADMAP.md)
 - [Concurrence et différenciateurs](docs/benchmark.md)
 - [Architecture](docs/ARCHITECTURE.md)

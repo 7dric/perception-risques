@@ -1,6 +1,9 @@
 # web/ — lecteur élève
 
-Site statique TypeScript + Vite, créé au jalon J2. Organisation prévue :
+Site statique TypeScript + Vite. L'ossature (Vite, Vitest, Playwright, i18n) est en place ;
+le lecteur lui-même arrive au jalon J2. Commandes : voir [docs/SETUP.md](../docs/SETUP.md).
+
+Organisation prévue :
 
 ```
 web/
