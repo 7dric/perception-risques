@@ -20,6 +20,8 @@ Tous droits réservés pour le moment. Rien ne s'oppose à un changement ultéri
 | Vite | MIT | Lecteur web | |
 | Vitest | MIT | Tests | |
 | Playwright | Apache-2.0 | Tests de bout en bout | |
+| MediaPipe Tasks Vision (Face Landmarker) | Apache-2.0 | Analyse du regard par webcam | Modèle fourni par Google, même licence |
+| WebGazer.js | GPL-3.0 | **Écarté** | Licence incompatible avec un produit fermé |
 | Odoo Community | LGPLv3 | Comptes, paiement (plus tard) | Enterprise est propriétaire et payant |
 
 ## Assets graphiques et sonores

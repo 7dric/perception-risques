@@ -8,6 +8,7 @@ web/
     player/     lecture vidéo, synchro image par image, capture des clics
     scoring/    moteur de score pur (sans DOM), testé avec vitest
     review/     écran de correction (replay, ralenti, polygones, frise)
+    gaze/       analyse du regard par webcam : capture, calibration, zones, statistiques (D6)
     i18n/       clés de traduction (fr d'abord)
   rules/
     official-be.json   paramètres du barème (voir docs/exam-rules.md)

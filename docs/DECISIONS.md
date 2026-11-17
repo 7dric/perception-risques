@@ -108,3 +108,30 @@ par une nouvelle qui y fait référence.
 - **Décision** : elles servent de référence pour le barème (voir exam-rules.md), sans attendre
   de confirmation officielle. Les valeurs restent dans un fichier de paramètres et pourront être
   corrigées si une source officielle les contredit.
+
+## ADR-014 — Analyse du regard par webcam (D6)
+
+- **Contexte** : savoir où l'élève regarde permet de distinguer « pas vu » de « vu mais pas
+  reconnu comme danger », et de vérifier l'usage des rétroviseurs. Aucun concurrent ne le fait.
+- **Décision** :
+  - Détection dans le navigateur avec MediaPipe Tasks Vision, Face Landmarker (Apache-2.0) :
+    478 points du visage, dont l'iris, sans serveur.
+  - Calibration maison : l'élève fixe 9 points, puis une régression (iris + pose de la tête)
+    donne la position à l'écran ; recalibration rapide entre deux clips.
+  - Précision attendue d'environ 1 à 2 cm à l'écran : on raisonne par **zones** (pare-brise
+    gauche, centre, droite ; rétroviseurs ; compteur) et par **polygones de danger agrandis**.
+  - WebGazer.js écarté : licence GPL-3.0, incompatible avec un produit fermé.
+- **Conséquences** :
+  - Prototype de faisabilité en J2b, avec décision go/no-go selon la précision mesurée.
+    Fonction complète en J6b.
+  - Fonction optionnelle : ordinateur avec webcam et bon éclairage ; lunettes et mouvements de
+    tête dégradent la précision. Elle ne change jamais le barème officiel.
+  - Le schéma d'annotation ne change pas : polygones et `views` suffisent.
+
+## ADR-015 — Données du regard : traitement 100 % local
+
+- **Contexte** : l'image du visage est une donnée personnelle sensible, et beaucoup d'élèves
+  sont mineurs.
+- **Décision** : voir [privacy.md](privacy.md). L'image webcam est traitée dans le navigateur,
+  jamais envoyée ni enregistrée. Activation volontaire, consentement clair. Seules des
+  statistiques sont conservées, effaçables par l'élève.

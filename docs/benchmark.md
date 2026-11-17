@@ -33,5 +33,6 @@ mode flamand « questions après le film ».
 | D3 | **Note de précision** : délai de réaction par rapport au moment idéal, en plus du barème officiel binaire | `idealFrame` dans les annotations, affichage en correction | J2 |
 | D4 | **Exercices courts** : clips de 10 s à un seul danger, « pause : que va-t-il se passer ? » | Format de clip court, mode d'exercice dans le lecteur | J5 |
 | D5 | **Conditions variées** : nuit, pluie, brouillard, soleil rasant, campagne, voie rapide, travaux | Lumière, météo et décors paramétrables dans Godot | J4 |
+| D6 | **Analyse du regard par webcam** : l'élève a-t-il regardé le danger avant de cliquer ? Contrôle des rétroviseurs, vision tunnel, pièges, carte du regard en correction. Aucun concurrent ne le propose | MediaPipe dans le navigateur, calibration, zones et polygones agrandis, traitement 100 % local | J2b (prototype), J6b |
 
 Non retenus pour l'instant : offre auto-écoles, allemand et anglais, modèle de prix (à revoir plus tard).

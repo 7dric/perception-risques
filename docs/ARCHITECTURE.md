@@ -66,6 +66,27 @@ Voir [benchmark.md](benchmark.md).
 | D3 Précision | `idealFrame` de chaque danger ; le moteur de score calcule le délai, à côté du barème officiel |
 | D4 Exercices courts | Clips `kind: "short"` et questions `predictions` (pause sur une image) |
 | D5 Conditions | Lumière, météo et décors paramétrables dans Godot ; `conditions` dans le JSON |
+| D6 Regard | Module `web/src/gaze/` ; le regard est comparé aux polygones et aux `views` déjà présents dans le JSON |
+
+## Analyse du regard (D6)
+
+Tout se passe dans le navigateur ; l'image de la webcam ne quitte jamais l'appareil
+(voir [privacy.md](privacy.md)).
+
+```
+webcam → MediaPipe Face Landmarker (iris + pose de la tête)
+       → modèle de calibration (9 points) → point de regard à l'écran (x, y normalisés)
+       → lissage et détection des fixations
+       → comparaison, image par image, avec :
+           - les zones : pare-brise gauche / centre / droite, rétroviseurs (`views`), compteur
+           - les polygones des dangers et des pièges, agrandis d'une marge
+             (paramètre, réglé selon la précision mesurée en J2b)
+       → statistiques : premier regard sur chaque danger, coups d'œil aux rétroviseurs,
+         dispersion, regard sur les pièges
+```
+
+Le module `gaze/` est séparé du moteur de score : il ajoute des informations à la correction et
+à l'entraînement adaptatif, mais ne modifie jamais le barème officiel.
 
 ## Données
 

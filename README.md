@@ -32,6 +32,7 @@ clignotants). Quand un danger apparaît, il doit cliquer dessus avant la fin d'u
 - [Architecture](docs/ARCHITECTURE.md)
 - [Décisions (ADR)](docs/DECISIONS.md)
 - [Licences](docs/LICENSES.md) et [registre des assets](docs/ASSETS.md)
+- [Vie privée (analyse du regard)](docs/privacy.md)
 - [Règles de l'examen officiel](docs/exam-rules.md)
 - [Catalogue des dangers](docs/hazard-catalog.md)
 

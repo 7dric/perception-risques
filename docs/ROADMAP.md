@@ -44,6 +44,16 @@ deux graines différentes = deux clips différents.
 
 **Terminé quand** : tests `vitest` du score et test `playwright` de clics dans et hors zone au vert.
 
+## J2b — Prototype d'analyse du regard (D6) ⬜
+
+- Activation volontaire, écran de consentement (voir [privacy.md](privacy.md))
+- Webcam + MediaPipe Face Landmarker dans le navigateur, calibration sur 9 points
+- Mesure de la précision réelle : plusieurs PC et webcams, éclairages, porteurs de lunettes
+- Superposition de la trajectoire du regard dans l'écran de correction
+
+**Terminé quand** : rapport de précision (erreur moyenne en cm et en % d'écran) et décision
+go/no-go pour J6b.
+
 ## J3 — Pipeline industrialisé ⬜
 
 - `tools/render-all` : rendu en lot avec Godot sans interface, une ou plusieurs graines par scénario
@@ -77,6 +87,16 @@ deux graines différentes = deux clips différents.
 - Tableau de progression : points faibles, délai moyen de réaction
 - Séries ciblées générées sur les points faibles
 
+## J6b — Analyse du regard complète (D6) ⬜
+
+Si J2b est concluant :
+- « Vu ou pas vu » : moment du premier regard sur un danger comparé au moment du clic
+- Coups d'œil aux rétroviseurs et au compteur : fréquence et durée
+- Vision tunnel : dispersion du regard
+- Pièges : l'élève a-t-il été attiré par un piège ?
+- Carte de chaleur du regard en correction
+- Nouvelles faiblesses suivies par l'entraînement adaptatif (« oublie les rétroviseurs »)
+
 ## J7 — Bêta ⬜
 
 - Tests avec des élèves et des auto-écoles, accessibilité, finitions
@@ -95,3 +115,4 @@ deux graines différentes = deux clips différents.
 3. Hébergement des vidéos : avec la génération, le volume grossit vite (environ 5 à 15 Mo par clip
    en AV1 1080p) : CDN, stockage objet.
 4. Odoo Community (LGPLv3) ou Enterprise (propriétaire, payant).
+5. Précision réelle de l'analyse du regard par webcam : suffisante pour les zones ? (levée par J2b)
