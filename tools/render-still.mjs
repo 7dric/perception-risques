@@ -6,11 +6,12 @@ import { join } from "node:path";
 import { DEFAULT_SCENARIO, ROOT, clipId, godot, parseArgs, scenarioArgs, winPath } from "./lib/render.mjs";
 
 const opts = parseArgs(process.argv.slice(2), {
-  scenario: DEFAULT_SCENARIO, seed: "42", time: "day", weather: "clear", frame: "300",
+  scenario: DEFAULT_SCENARIO, seed: "42", time: "day", weather: "clear", environment: "urban",
+  quality: "reference", frame: "300",
 });
 const dir = join(ROOT, "content/stills");
 mkdirSync(dir, { recursive: true });
-const png = join(dir, `${clipId(opts)}-f${opts.frame}.png`);
+const png = join(dir, `${clipId(opts)}-f${opts.frame}${opts.quality === "reference" ? "" : `-${opts.quality}`}.png`);
 try {
   const out = godot([
     `res://scenarios/${opts.scenario}.tscn`, "--",

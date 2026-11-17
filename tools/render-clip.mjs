@@ -57,8 +57,9 @@ export function validate(json) {
 if (process.argv[1]?.endsWith("render-clip.mjs")) {
   const opts = parseArgs(process.argv.slice(2), {
     scenario: DEFAULT_SCENARIO, seed: "42", time: "day", weather: "clear", environment: "urban",
-    quality: "reference", out: "", png: false, vp9: false, "keep-frames": false,
+    quality: "reference", frames: "", out: "", png: false, vp9: false, "keep-frames": false, "no-preview": false,
   });
+  opts.preview = !opts["no-preview"];
   try {
     const clip = renderClip(opts);
     validate(clip.json);

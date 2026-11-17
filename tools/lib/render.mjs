@@ -56,7 +56,7 @@ export function godot(args, movie = {}) {
   const bin = findGodot();
   if (!bin) throw new Error("Godot introuvable (npm run check-env)");
   const ffmpegBin = findFfmpeg();
-  // Variables for production/tools/ffmpeg_writer.gd; WSLENV forwards them to Windows programs.
+  // Variables for production/tools/ffmpeg_pipe.gd; WSLENV forwards them to Windows programs.
   const env = {
     ...process.env,
     PR_FFMPEG: ffmpegBin ?? "",

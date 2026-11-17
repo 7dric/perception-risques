@@ -46,6 +46,7 @@ func _ready() -> void:
 		return
 	rng.seed = params.rng_seed
 	_build()
+	_apply_quality()
 	if params.frames > 0:
 		duration_frames = mini(params.frames, duration_frames)
 	recorder = AnnotationRecorder.new()
@@ -148,6 +149,27 @@ func _write_annotations() -> void:
 ## Identifier of the clip: scenario, seed and conditions (schema pattern ^[a-z0-9][a-z0-9-]*$).
 func clip_id() -> String:
 	return ("%s-s%d-%s-%s" % [scenario_id, params.rng_seed, params.time_of_day, params.weather]).replace("_", "-")
+
+
+# --- Quality presets (--quality) ------------------------------------------------------------
+
+## "reference": the validated look (project settings: 4K internal render downscaled to 1080p,
+## MSAA 2x, mirrors rendered the same way). "fast": cheaper settings, adopted only after a
+## side-by-side comparison (ADR-020).
+func _apply_quality() -> void:
+	if params.quality != "fast":
+		return
+	var vp := get_viewport()
+	vp.scaling_3d_mode = Viewport.SCALING_3D_MODE_BILINEAR
+	vp.scaling_3d_scale = 1.5
+	vp.msaa_3d = Viewport.MSAA_4X
+	for sub: SubViewport in find_children("*", "SubViewport", true, false):
+		sub.scaling_3d_scale = 1.0
+		sub.msaa_3d = Viewport.MSAA_4X
+	RenderingServer.directional_soft_shadow_filter_set_quality(RenderingServer.SHADOW_QUALITY_SOFT_MEDIUM)
+	RenderingServer.positional_soft_shadow_filter_set_quality(RenderingServer.SHADOW_QUALITY_SOFT_MEDIUM)
+	if conditions and conditions.environment:
+		conditions.environment.ssr_max_steps = 64
 
 
 # --- Profiling (--profile) ----------------------------------------------------------------

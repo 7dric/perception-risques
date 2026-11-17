@@ -19,6 +19,7 @@ Déjà disponibles :
 | `fetch-assets.mjs` | Télécharge les assets CC0 listés dans `production/assets/assets.json` et régénère leurs lignes de `docs/ASSETS.md` |
 | `render-still.mjs` | Image fixe d'un scénario (`npm run render:still`) |
 | `render-clip.mjs` | Clip complet : images envoyées directement à FFmpeg (master sans perte FFV1 + aperçu H.264, NVENC si le pilote le permet), JSON validé (`npm run render:clip`, `--vp9` pour un WebM, `--png` pour l'ancien mode Movie Maker) |
+| `render-batch.mjs` | Lot de clips (graines × moments × météos × décors), `--jobs` instances (1 par défaut : la RTX 3050 sature à une) (`npm run render:batch`) |
 | `bench-render.mjs` | Vitesse de rendu par mode de sortie et temps CPU/GPU par vue (`npm run bench:render`) |
 | `check-determinism.mjs` | Vérifie « même graine = mêmes images, deux graines = deux clips » (`npm run check:determinism`) |
 | `test-godot.mjs` | Tests unitaires GDScript (`npm run test:godot`) |
