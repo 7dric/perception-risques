@@ -1,0 +1,31 @@
+{
+  "$comment": "Assets tiers téléchargés par tools/fetch-assets.mjs dans production/assets/<source>/<id>/ (non versionnés, voir ADR-018). Chaque entrée produit une ligne de docs/ASSETS.md.",
+  "polyhaven": {
+    "resolution": "2k",
+    "added": "2026-11-17",
+    "textures": [
+      { "id": "asphalt_02", "use": "Chaussée" },
+      { "id": "square_concrete_pavers", "use": "Trottoir (dalles 30 × 30)" },
+      { "id": "granular_concrete", "use": "Bordures" },
+      { "id": "red_brick_03", "use": "Façade en brique rouge" },
+      { "id": "brown_brick_02", "use": "Façade en brique brune" },
+      { "id": "whitewashed_brick", "use": "Façade en brique peinte" },
+      { "id": "plaster_grey_04", "use": "Façade enduite" }
+    ],
+    "hdris": [
+      { "id": "kloofendal_48d_partly_cloudy_puresky", "resolution": "4k", "use": "Jour, ciel partiellement nuageux" },
+      { "id": "kloofendal_overcast_puresky", "resolution": "4k", "use": "Jour couvert, pluie, brouillard" },
+      { "id": "qwantani_dusk_2_puresky", "resolution": "4k", "use": "Crépuscule" },
+      { "id": "qwantani_sunrise_puresky", "resolution": "4k", "use": "Aube" },
+      { "id": "qwantani_night_puresky", "resolution": "4k", "use": "Nuit" },
+      { "id": "syferfontein_6d_clear_puresky", "resolution": "4k", "use": "Soleil rasant" }
+    ],
+    "models": [
+      { "id": "modular_urban_apartments_facade", "use": "Façades d'immeubles en brique" },
+      { "id": "street_lamp_01", "use": "Lampadaire" },
+      { "id": "metal_trash_can", "use": "Poubelle" },
+      { "id": "modular_street_seating", "use": "Banc" },
+      { "id": "planter_box_01", "use": "Bac à fleurs" }
+    ]
+  }
+}

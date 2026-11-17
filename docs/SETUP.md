@@ -37,6 +37,17 @@ dossier des paquets winget. Pour forcer un chemin : variables d'environnement `G
 | `npm run build -w web` | Vérification des types + build de production dans `web/dist/` |
 | `npm run test:e2e -w web` | Tests de bout en bout (Playwright, Chromium) |
 | `npm run check-env` | Diagnostic de l'environnement |
+| `npm run fetch-assets` | Télécharge les assets CC0 de `production/assets/assets.json` (Poly Haven) et met à jour `docs/ASSETS.md` |
+| `npm run render:still -- --frame=300 [--seed= --time= --weather=]` | Image fixe d'un scénario dans `content/stills/` |
+| `npm run render:clip -- --seed=42 [--time= --weather= --keep-frames]` | Clip complet : images, annotations JSON validées, aperçu WebM VP9 dans `content/raw/<id>/` |
+| `npm run check:determinism -- --frames=60` | Même graine = mêmes images et annotations ; deux graines = deux clips |
+| `npm run test:godot` | Tests unitaires GDScript (annotations, trajectoires) |
+
+Après `fetch-assets`, importer les assets une fois dans Godot :
+`godot --headless --path production --import`.
+
+Moments du jour : `day`, `dawn`, `dusk`, `night`. Météo : `clear`, `overcast`, `rain`, `fog`,
+`low_sun`.
 
 Ouvrir le projet Godot : lancer Godot, « Importer », choisir `production/project.godot`.
 

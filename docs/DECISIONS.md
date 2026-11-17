@@ -157,3 +157,36 @@ par une nouvelle qui y fait référence.
 - **Conséquences** : les identifiants `type` sont figés ; un clic avant la fenêtre est un clic
   perdu ; l'ancien type `bus_stop` devient `bus_stop_pedestrian`. Toute modification du
   catalogue passe par une nouvelle ADR. J0 est terminé.
+
+## ADR-018 — Tranche verticale J1 : décor par le code, assets téléchargés, annotations rectangulaires
+
+- **Contexte** : J1 demande un carrefour, un cockpit, un danger, un piège, un scénario
+  paramétré et un rendu déterministe avec annotations.
+- **Décisions** :
+  - **Décor construit par le code** (`Crossroads`, `FacadeKit`) plutôt que dans l'éditeur ou
+    avec le plugin Road Generator : pour un carrefour, c'est plus court, entièrement varié par la
+    graine (maisons, briques, mobilier) et réutilisable par le générateur de J4.
+  - **Assets CC0 téléchargés par script, non versionnés** : `production/assets/assets.json`
+    liste les assets Poly Haven ; `npm run fetch-assets` les télécharge (MD5 vérifié) et
+    régénère leurs lignes de `ASSETS.md`. Les 18 premiers pèsent 259 Mo : trop pour Git. Les
+    modèles Sketchfab (CC-BY, téléchargement avec compte) seront archivés hors de Git de la même
+    façon ; leur stockage (Git LFS ou stockage objet) sera tranché à leur arrivée.
+  - **Acteurs = fonctions pures du numéro d'image** : trajectoires (`Timeline`) et profils de
+    vitesse (`SpeedProfile`) précalculés au démarrage depuis la graine. Pas d'horloge, pas de
+    physique dynamique.
+  - **Contour annoté = rectangle englobant** de la boîte du danger projetée (4 points, dans
+    l'ordre haut-gauche, haut-droit, bas-droit, bas-gauche) au lieu de l'enveloppe convexe prévue
+    dans ARCHITECTURE.md : un nombre de points fixe permet au lecteur d'interpoler entre deux
+    images clés. Images clés gardées quand l'écart d'interpolation dépasse 0,003.
+  - **Masquage** : visible si au moins 30 % de 9 rayons (centre et coins) atteignent la boîte.
+    Au pare-brise, un contour dont le centre tombe sous un rétroviseur ou le compteur est
+    considéré comme caché.
+  - **Rendu** : Forward+, suréchantillonnage ×2 (`scaling_3d/scale = 2.0`), MSAA 2×, SDFGI,
+    SSAO, SSIL, SSR, ombres douces, tonemapping AgX. Fenêtre réduite (960×540), viewport en
+    1920×1080 (`stretch/mode = viewport`). Coût mesuré : 0,73 s par image sur la RTX 3050 de
+    référence, soit environ 9 min pour un clip de 25 s.
+  - **Déterminisme** : deux rendus de la même graine donnent des annotations identiques à
+    l'octet, mais des images qui ne sont pas identiques au bit près (petites variations du GPU,
+    SDFGI et effets temporels). Mesure du 17/11/2026 : PSNR minimal de 55 dB entre deux rendus,
+    15 dB entre deux graines. Règle retenue (`npm run check:determinism`) : même graine = PSNR
+    ≥ 50 dB sur chaque image ; deux graines = PSNR moyen ≤ 35 dB.

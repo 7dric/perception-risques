@@ -2,6 +2,10 @@
 content/**
 !content/README.md
 
+# Third-party assets downloaded by tools/fetch-assets.mjs (ADR-018)
+production/assets/polyhaven/
+production/assets/_inbox/
+
 # Godot
 .godot/
 *.import
