@@ -1,0 +1,29 @@
+# Rendered content (videos, frames) is never committed
+content/**
+!content/README.md
+
+# Godot
+.godot/
+*.import
+export_presets.cfg
+*.translation
+
+# Web
+node_modules/
+dist/
+coverage/
+playwright-report/
+test-results/
+
+# Media produced while working
+*.avi
+*.mp4
+*.webm
+*.wav
+*.png.tmp
+
+# OS / editors
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

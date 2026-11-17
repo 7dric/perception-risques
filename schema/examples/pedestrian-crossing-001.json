@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 0,
+  "id": "pedestrian-crossing-001",
+  "title": { "fr": "Carrefour urbain, piéton pressé" },
+  "video": {
+    "fps": 30,
+    "width": 1920,
+    "height": 1080,
+    "frameCount": 750,
+    "sources": [
+      { "src": "pedestrian-crossing-001.av1.webm", "type": "video/webm; codecs=av01.0.08M.08" },
+      { "src": "pedestrian-crossing-001.vp9.webm", "type": "video/webm; codecs=vp9" }
+    ]
+  },
+  "views": {
+    "windshield": { "x": 0, "y": 0, "w": 1, "h": 1 },
+    "mirrorCenter": { "x": 0.3, "y": 0.01, "w": 0.4, "h": 0.19 },
+    "mirrorLeft": { "x": 0.02, "y": 0.72, "w": 0.21, "h": 0.25 },
+    "mirrorRight": { "x": 0.77, "y": 0.72, "w": 0.21, "h": 0.25 }
+  },
+  "hazards": [
+    {
+      "id": "h1",
+      "type": "pedestrian_crossing",
+      "label": { "fr": "Piéton qui traverse" },
+      "explanation": {
+        "fr": "Le piéton sur le trottoir de gauche regarde son téléphone et s'engage sans regarder. Il fallait le repérer dès qu'il s'approchait du bord."
+      },
+      "window": { "startFrame": 300, "endFrame": 420 },
+      "idealFrame": 310,
+      "tracks": [
+        {
+          "view": "windshield",
+          "keyframes": [
+            { "frame": 290, "polygon": [[0.30, 0.52], [0.33, 0.52], [0.33, 0.62], [0.30, 0.62]] },
+            { "frame": 360, "polygon": [[0.40, 0.50], [0.44, 0.50], [0.44, 0.65], [0.40, 0.65]] },
+            { "frame": 420, "polygon": [[0.50, 0.48], [0.56, 0.48], [0.56, 0.70], [0.50, 0.70]] },
+            { "frame": 450, "visible": false }
+          ]
+        }
+      ]
+    }
+  ]
+}

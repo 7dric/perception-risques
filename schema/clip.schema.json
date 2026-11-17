@@ -1,0 +1,145 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/schema/clip.schema.json",
+  "title": "Clip annotation",
+  "description": "Annotations of one rendered clip: where each hazard is on screen, frame by frame. Coordinates are normalized (0..1) to the full video frame, origin top-left.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "id", "video", "views", "hazards"],
+  "properties": {
+    "schemaVersion": { "const": 0 },
+    "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" },
+    "title": { "$ref": "#/$defs/i18nText" },
+    "video": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["fps", "width", "height", "frameCount"],
+      "properties": {
+        "fps": { "type": "number", "exclusiveMinimum": 0 },
+        "width": { "type": "integer", "minimum": 1 },
+        "height": { "type": "integer", "minimum": 1 },
+        "frameCount": { "type": "integer", "minimum": 1 },
+        "sources": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["src", "type"],
+            "properties": {
+              "src": { "type": "string" },
+              "type": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "views": {
+      "description": "Screen rectangles of each view (windshield and mirrors).",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["windshield"],
+      "properties": {
+        "windshield": { "$ref": "#/$defs/rect" },
+        "mirrorCenter": { "$ref": "#/$defs/rect" },
+        "mirrorLeft": { "$ref": "#/$defs/rect" },
+        "mirrorRight": { "$ref": "#/$defs/rect" }
+      }
+    },
+    "hazards": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/hazard" }
+    }
+  },
+  "$defs": {
+    "i18nText": {
+      "type": "object",
+      "required": ["fr"],
+      "properties": {
+        "fr": { "type": "string" },
+        "nl": { "type": "string" },
+        "de": { "type": "string" },
+        "en": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "point": {
+      "type": "array",
+      "prefixItems": [
+        { "type": "number", "minimum": 0, "maximum": 1 },
+        { "type": "number", "minimum": 0, "maximum": 1 }
+      ],
+      "items": false,
+      "minItems": 2
+    },
+    "rect": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["x", "y", "w", "h"],
+      "properties": {
+        "x": { "type": "number", "minimum": 0, "maximum": 1 },
+        "y": { "type": "number", "minimum": 0, "maximum": 1 },
+        "w": { "type": "number", "minimum": 0, "maximum": 1 },
+        "h": { "type": "number", "minimum": 0, "maximum": 1 }
+      }
+    },
+    "keyframe": {
+      "description": "Hazard outline at one frame. The player interpolates between keyframes. visible=false means hidden (occluded or off screen) from this frame on.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["frame"],
+      "properties": {
+        "frame": { "type": "integer", "minimum": 0 },
+        "visible": { "type": "boolean", "default": true },
+        "polygon": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/point" },
+          "minItems": 3
+        }
+      }
+    },
+    "track": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["view", "keyframes"],
+      "properties": {
+        "view": { "enum": ["windshield", "mirrorCenter", "mirrorLeft", "mirrorRight"] },
+        "keyframes": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/keyframe" },
+          "minItems": 1
+        }
+      }
+    },
+    "hazard": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "type", "window", "idealFrame", "tracks", "label", "explanation"],
+      "properties": {
+        "id": { "type": "string" },
+        "type": { "type": "string", "description": "See docs/hazard-catalog.md" },
+        "label": { "$ref": "#/$defs/i18nText" },
+        "explanation": { "$ref": "#/$defs/i18nText" },
+        "window": {
+          "description": "Frames during which a click on the hazard counts.",
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["startFrame", "endFrame"],
+          "properties": {
+            "startFrame": { "type": "integer", "minimum": 0 },
+            "endFrame": { "type": "integer", "minimum": 0 }
+          }
+        },
+        "idealFrame": {
+          "description": "Earliest moment a careful driver should notice the hazard.",
+          "type": "integer",
+          "minimum": 0
+        },
+        "tracks": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/track" },
+          "minItems": 1
+        }
+      }
+    }
+  }
+}
