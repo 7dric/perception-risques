@@ -15,7 +15,12 @@ Forza, Asphalt 8) ou n'indiquent pas leur origine. On les exclut, même si la li
 les autoriserait : celui qui les a publiées n'en détient pas les droits. Comptes concernés :
 BHP3D, Car2022, tonielpro520, niev, DR1KING100K, Res1n, iwillsearch69, dannzjs.
 
-## Voitures (à télécharger en priorité)
+## Voitures
+
+Le pack générique (10 voitures sans marque) est **intégré** depuis le 17/11/2026 : il suffit pour
+le stationnement et le trafic de J1. Les modèles de marque ci-dessous ne seront ajoutés qu'après
+retrait des logos et retouche des traits reconnaissables (voitures génériques uniquement, à cause
+des droits des constructeurs). Calandres du SUV et du pick-up à vérifier de près.
 
 | Priorité | Modèle | Lien | Auteur | Licence | Triangles | Remarque |
 |---|---|---|---|---|---|---|

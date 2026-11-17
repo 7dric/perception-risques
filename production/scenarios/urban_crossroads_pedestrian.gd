@@ -16,6 +16,7 @@ const BRAKE := 2.5
 const ACCEL := 1.5
 const EGO_X := Crossroads.LANE / 2.0
 const PATH_END_Z := -135.0
+const LEFT_CLEAR := 22.0
 
 var ego_follow: PathFollow3D
 var ego_profile: SpeedProfile
@@ -117,7 +118,7 @@ func _pose(f: int, t: float) -> void:
 	ego_follow.progress = s
 	cockpit.dashboard.show_state(ego_profile.speed(f) * 3.6, t)
 	var curve_len := (ego_follow.get_parent() as Path3D).curve.get_baked_length()
-	var fs := ego_profile.distance(f - 36) - follower_gap - Car.LENGTH
+	var fs := ego_profile.distance(f - 36) - follower_gap - follower.length
 	follower.position = (ego_follow.get_parent() as Path3D).curve.sample_baked(clampf(fs, -200.0, curve_len))
 	if fs < 0.0:
 		follower.position.z -= fs
@@ -170,16 +171,23 @@ func _park_cars(start_z: float, stop_z: float) -> void:
 		var z := Crossroads.CROSSWALK_Z + Crossroads.CROSSWALK_W / 2.0 + 5.0 + rng.randf_range(0.0, 3.0)
 		while z < start_z + 30.0:
 			var at_stop := sx > 0 and z + Car.LENGTH > stop_z - 12.0 and z < stop_z + 6.0
-			if rng.randf() < 0.8 and not at_stop:
+			# Left side: no parking on the 22 m before the zebra, so that the crossing pedestrian
+			# stays visible from the start of the window (docs/hazard-catalog.md, rule 1).
+			var before_zebra := sx < 0 and z < Crossroads.CROSSWALK_Z + LEFT_CLEAR
+			var length := Car.LENGTH
+			if rng.randf() < 0.8 and not at_stop and not before_zebra:
 				var c := _car("Parked", true)
+				length = c.length
 				c.position = Vector3(sx * (Crossroads.LANE + Crossroads.PARKING / 2.0), 0, z)
 				c.rotation.y = 0.0 if sx > 0 else PI
 				if sx < 0:
-					c.position.z += Car.LENGTH
-			z += Car.LENGTH + rng.randf_range(0.8, 2.5)
+					c.position.z += length
+			z += length + rng.randf_range(0.8, 2.5)
 		z = -Crossroads.FACADE - 3.0 - rng.randf_range(0.0, 3.0)
 		while z > Crossroads.MAIN_FROM + 10.0:
+			var length := Car.LENGTH
 			if rng.randf() < 0.7:
 				var c := _car("Parked", true)
-				c.position = Vector3(sx * (Crossroads.LANE + Crossroads.PARKING / 2.0), 0, z - Car.LENGTH)
-			z -= Car.LENGTH + rng.randf_range(0.8, 2.5)
+				length = c.length
+				c.position = Vector3(sx * (Crossroads.LANE + Crossroads.PARKING / 2.0), 0, z - length)
+			z -= length + rng.randf_range(0.8, 2.5)

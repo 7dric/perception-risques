@@ -36,7 +36,7 @@ export function godot(args) {
   if (!bin) throw new Error("Godot introuvable (npm run check-env)");
   const res = spawnSync(bin, ["--path", winPath(join(ROOT, "production")), ...args], { encoding: "utf8", maxBuffer: 1 << 28 });
   const output = `${res.stdout ?? ""}${res.stderr ?? ""}`.replace(/\r/g, "");
-  const errors = output.split("\n").filter((l) => /SCRIPT ERROR|^ERROR:/.test(l) && !/resources still in use|ObjectDB instances/.test(l));
+  const errors = output.split("\n").filter((l) => /SCRIPT ERROR|^ERROR:|^HAZARD_HIDDEN/.test(l) && !/resources still in use|ObjectDB instances/.test(l));
   if (res.status !== 0 || errors.length) {
     console.error(output.split("\n").slice(-40).join("\n"));
     throw new Error(`Godot a échoué (code ${res.status}, ${errors.length} erreur(s))`);

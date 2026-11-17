@@ -173,5 +173,20 @@ static func _r(x: float) -> float:
 	return snappedf(x, 0.0001)
 
 
+## Frames of the hazard's window where it is visible in no view (should be 0: a hazard
+## must be clickable during its whole window, docs/hazard-catalog.md rule 1).
+func hidden_in_window(h: Hazard) -> int:
+	var hidden := 0
+	for f in range(h.window_start, mini(h.window_end + 1, _frames)):
+		var seen := false
+		for v in views:
+			if not (_samples[h.hazard_id][v][f] as PackedVector2Array).is_empty():
+				seen = true
+				break
+		if not seen:
+			hidden += 1
+	return hidden
+
+
 func frame_count() -> int:
 	return _frames

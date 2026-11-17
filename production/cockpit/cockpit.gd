@@ -49,7 +49,8 @@ func _ready() -> void:
 func _build_hood() -> void:
 	var mat := StandardMaterial3D.new()
 	mat.albedo_color = Color(0.02, 0.022, 0.026)
-	mat.roughness = 0.7
+	mat.roughness = 1.0
+	mat.metallic_specular = 0.1
 	var hood := MeshInstance3D.new()
 	var box := BoxMesh.new()
 	box.size = Vector3(1.75, 0.08, 2.0)

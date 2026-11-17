@@ -1,9 +1,9 @@
 class_name Car
 extends Node3D
-## A car. Placeholder body (until the realistic models are integrated): lower body, cabin,
-## wheels, lights. Origin: middle of the front bumper on the ground, facing -Z.
+## A car: a realistic model from CarLibrary when the pack is downloaded, otherwise a
+## placeholder body. Origin: middle of the front bumper on the ground, facing -Z.
 
-const LENGTH := 4.3
+const LENGTH := 4.3   ## placeholder length, also the default spacing
 const WIDTH := 1.8
 
 ## Common car colours on Belgian roads.
@@ -13,9 +13,35 @@ const PAINTS := [
 ]
 
 var paint := Color(0.5, 0.5, 0.5)
+## Real size of this car (m).
+var length := LENGTH
+var width := WIDTH
+var height := 1.45
+var model_name := "placeholder"
 
 
 func setup(rng: RandomNumberGenerator, with_collision: bool) -> void:
+	if CarLibrary.available():
+		var m := CarLibrary.pick(rng)
+		model_name = m.name
+		add_child((m.template as Node3D).duplicate())
+		width = m.size.x
+		height = m.size.y
+		length = m.size.z
+	else:
+		_build_placeholder(rng)
+	if with_collision:
+		var body := StaticBody3D.new()
+		var shape := CollisionShape3D.new()
+		var bs := BoxShape3D.new()
+		bs.size = Vector3(width, height, length)
+		shape.shape = bs
+		shape.position = Vector3(0, height / 2.0, length / 2.0)
+		body.add_child(shape)
+		add_child(body)
+
+
+func _build_placeholder(rng: RandomNumberGenerator) -> void:
 	paint = PAINTS[rng.randi() % PAINTS.size()]
 	var body_mat := StandardMaterial3D.new()
 	body_mat.albedo_color = paint
@@ -40,15 +66,6 @@ func setup(rng: RandomNumberGenerator, with_collision: bool) -> void:
 			w.position = Vector3(x, 0.32, z)
 			w.material_override = rubber
 			add_child(w)
-	if with_collision:
-		var body := StaticBody3D.new()
-		var shape := CollisionShape3D.new()
-		var bs := BoxShape3D.new()
-		bs.size = Vector3(WIDTH, 1.45, LENGTH)
-		shape.shape = bs
-		shape.position = Vector3(0, 0.75, LENGTH / 2.0)
-		body.add_child(shape)
-		add_child(body)
 
 
 func _box(size: Vector3, center: Vector3, mat: Material) -> void:

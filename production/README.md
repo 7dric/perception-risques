@@ -11,9 +11,9 @@ production/
   roads/       Crossroads (carrefour construit par le code), FacadeKit (maisons mitoyennes), Pbr (matériaux)
   environment/ Conditions : moment du jour, météo, ciel HDRI, soleil, pluie, éclairage public
   cockpit/     Cockpit (caméra pare-brise, rétroviseurs en SubViewport, capot), Dashboard (compteur, clignotants)
-  actors/      Timeline et SpeedProfile (trajectoires), Pedestrian, Car
+  actors/      Timeline et SpeedProfile (trajectoires), Pedestrian, Car, CarLibrary (modèles réalistes)
   hazards/     Hazard (danger ou piège), AnnotationRecorder (polygones image par image, export JSON)
-  tests/       tests GDScript sans rendu (npm run test:godot)
+  tests/       tests GDScript sans rendu (npm run test:godot) ; car_sheet.gd : planche de contrôle des voitures
   assets/      assets.json (liste des assets CC0) ; fichiers téléchargés non versionnés (ADR-018)
 ```
 
@@ -48,6 +48,14 @@ fenêtre et le laisse passer. Un piège attend, immobile et dos à la route, sur
 droite. La graine fait varier les horaires, les vitesses, la place du piège, les maisons, les
 voitures stationnées et leurs couleurs.
 
-Les piétons et les voitures sont encore des **formes provisoires** : les modèles réalistes
-(voir [docs/assets-candidates.md](../docs/assets-candidates.md)) seront intégrés après la
-validation de l'image de référence.
+**Voitures** : `CarLibrary` reconstruit les 10 voitures du pack générique (Comrade1280,
+CC-BY 4.0) à partir de `production/assets/sketchfab/generic_passenger_car_pack/` : chaque
+carrosserie est regroupée avec ses roues, orientée par son emprise minimale et remise dans notre
+convention (pare-chocs avant à l'origine, vers -Z). Le sens avant/arrière de chaque modèle est
+fixé à la main dans `CarLibrary.MODELS`, vérifié avec la planche :
+`godot --path production --script res://tests/car_sheet.gd -- --out=<png>`. Les modèles sont
+tirés au hasard avec des poids adaptés à une ville belge. Sans le pack, les voitures
+redeviennent des formes provisoires.
+
+Les **piétons** sont encore des formes provisoires (voir
+[docs/assets-candidates.md](../docs/assets-candidates.md)).

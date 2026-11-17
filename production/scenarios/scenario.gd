@@ -59,7 +59,7 @@ func _physics_process(_delta: float) -> void:
 	if frame >= duration_frames:
 		set_physics_process(false)
 		_write_annotations()
-		get_tree().quit()
+		_quit(0)
 
 
 ## Places everything for frame [param f].
@@ -76,7 +76,12 @@ func _still() -> void:
 	var img := get_viewport().get_texture().get_image()
 	var err := img.save_png(params.still_path)
 	print("STILL|%s|%dx%d|%s" % [params.still_path, img.get_width(), img.get_height(), error_string(err)])
-	get_tree().quit(0 if err == OK else 1)
+	_quit(0 if err == OK else 1)
+
+
+func _quit(code: int) -> void:
+	CarLibrary.release()
+	get_tree().quit(code)
 
 
 func _write_annotations() -> void:
@@ -98,6 +103,11 @@ func _write_annotations() -> void:
 	f.store_string(JSON.stringify(recorder.build(header), "  ", false) + "\n")
 	f.close()
 	print("ANNOTATIONS|%s|%d frames" % [path, recorder.frame_count()])
+	for h in recorder.hazards:
+		if not h.is_decoy and h.window_end < recorder.frame_count():
+			var hidden := recorder.hidden_in_window(h)
+			if hidden > 0:
+				printerr("HAZARD_HIDDEN|%s|%d image(s) de la fenêtre %d-%d sans danger visible" % [h.hazard_id, hidden, h.window_start, h.window_end])
 
 
 ## Identifier of the clip: scenario, seed and conditions (schema pattern ^[a-z0-9][a-z0-9-]*$).
