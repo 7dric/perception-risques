@@ -30,11 +30,40 @@ export function winPath(p) {
   return isWsl ? execFileSync("wslpath", ["-w", p], { encoding: "utf8" }).trim() : p;
 }
 
-/** Runs Godot on the production project; streams its output and returns it. */
-export function godot(args) {
+let previewCodec;
+/**
+ * Encoder of the H.264 preview: NVENC (GPU) when the NVIDIA driver supports the API version of
+ * this FFmpeg build, otherwise libx264 (CPU). Probed once with a 1-frame encode.
+ */
+export function previewEncoder() {
+  if (previewCodec === undefined) {
+    const res = spawnSync(findFfmpeg(), ["-hide_banner", "-loglevel", "error", "-f", "lavfi", "-i",
+      "color=black:s=256x256:d=0.1", "-frames:v", "1", "-c:v", "h264_nvenc", "-f", "null", "-"], { encoding: "utf8" });
+    previewCodec = res.status === 0 ? "h264_nvenc" : "libx264";
+    if (previewCodec !== "h264_nvenc") {
+      const why = /Required: [\d.]+ Found: [\d.]+/.exec(res.stderr ?? "")?.[0] ?? (res.stderr ?? "").trim().split("\n")[0];
+      console.warn(`NVENC indisponible (${why}) : aperçu encodé par le processeur (libx264). Mettre à jour le pilote NVIDIA.`);
+    }
+  }
+  return previewCodec;
+}
+
+/**
+ * Runs Godot on the production project and returns its output.
+ * movie.preview: false skips the H.264 preview of the video output (FfmpegPipe).
+ */
+export function godot(args, movie = {}) {
   const bin = findGodot();
   if (!bin) throw new Error("Godot introuvable (npm run check-env)");
-  const res = spawnSync(bin, ["--path", winPath(join(ROOT, "production")), ...args], { encoding: "utf8", maxBuffer: 1 << 28 });
+  const ffmpegBin = findFfmpeg();
+  // Variables for production/tools/ffmpeg_writer.gd; WSLENV forwards them to Windows programs.
+  const env = {
+    ...process.env,
+    PR_FFMPEG: ffmpegBin ?? "",
+    PR_MOVIE_PREVIEW: movie.preview === false || !ffmpegBin ? "0" : previewEncoder(),
+    WSLENV: [process.env.WSLENV, "PR_FFMPEG/p", "PR_MOVIE_PREVIEW"].filter(Boolean).join(":"),
+  };
+  const res = spawnSync(bin, ["--path", winPath(join(ROOT, "production")), ...args], { encoding: "utf8", maxBuffer: 1 << 28, env });
   const output = `${res.stdout ?? ""}${res.stderr ?? ""}`.replace(/\r/g, "");
   const errors = output.split("\n").filter((l) => /SCRIPT ERROR|^ERROR:|^HAZARD_HIDDEN/.test(l) && !/resources still in use|ObjectDB instances/.test(l));
   if (res.status !== 0 || errors.length) {
@@ -55,6 +84,8 @@ export function ffmpeg(args) {
 /** Scenario arguments passed to Godot after "--". */
 export function scenarioArgs(opts) {
   const args = [`--seed=${opts.seed}`, `--time=${opts.time}`, `--weather=${opts.weather}`];
+  if (opts.environment) args.push(`--environment=${opts.environment}`);
+  if (opts.quality) args.push(`--quality=${opts.quality}`);
   if (opts.frames) args.push(`--frames=${opts.frames}`);
   return args;
 }
@@ -66,6 +97,12 @@ export function clipId(opts) {
 /** Sorted list of the frame PNGs written by Movie Maker in a folder. */
 export function framesIn(dir) {
   return readdirSync(dir).filter((f) => /^frame\d+\.png$/.test(f)).sort();
+}
+
+/** MD5 of every decoded frame of a video (FFmpeg framemd5), in order. */
+export function frameMd5s(video) {
+  return ffmpeg(["-i", winPath(video), "-map", "0:v:0", "-f", "framemd5", "-"])
+    .replace(/\r/g, "").split("\n").filter((l) => l && !l.startsWith("#")).map((l) => l.split(",").pop().trim());
 }
 
 export function md5File(path) {

@@ -18,7 +18,8 @@ Déjà disponibles :
 | `winrun.cmd` | Lance une commande sous Windows depuis WSL (voir docs/SETUP.md) |
 | `fetch-assets.mjs` | Télécharge les assets CC0 listés dans `production/assets/assets.json` et régénère leurs lignes de `docs/ASSETS.md` |
 | `render-still.mjs` | Image fixe d'un scénario (`npm run render:still`) |
-| `render-clip.mjs` | Clip complet, JSON validé, aperçu WebM VP9 (`npm run render:clip`) |
+| `render-clip.mjs` | Clip complet : images envoyées directement à FFmpeg (master sans perte FFV1 + aperçu H.264, NVENC si le pilote le permet), JSON validé (`npm run render:clip`, `--vp9` pour un WebM, `--png` pour l'ancien mode Movie Maker) |
+| `bench-render.mjs` | Vitesse de rendu par mode de sortie et temps CPU/GPU par vue (`npm run bench:render`) |
 | `check-determinism.mjs` | Vérifie « même graine = mêmes images, deux graines = deux clips » (`npm run check:determinism`) |
 | `test-godot.mjs` | Tests unitaires GDScript (`npm run test:godot`) |
 | `lib/bins.mjs`, `lib/render.mjs` | Recherche de Godot et FFmpeg, lancement depuis WSL ou Windows |

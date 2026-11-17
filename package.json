@@ -18,7 +18,8 @@
     "render:still": "node tools/render-still.mjs",
     "render:clip": "node tools/render-clip.mjs",
     "check:determinism": "node tools/check-determinism.mjs",
-    "test:godot": "node tools/test-godot.mjs"
+    "test:godot": "node tools/test-godot.mjs",
+    "bench:render": "node tools/bench-render.mjs"
   },
   "devDependencies": {
     "ajv": "8.20.0"
