@@ -5,6 +5,7 @@ content/**
 # Third-party assets downloaded by tools/fetch-assets.mjs (ADR-018)
 production/assets/polyhaven/
 production/assets/_inbox/
+production/assets/sketchfab/
 
 # Godot
 .godot/

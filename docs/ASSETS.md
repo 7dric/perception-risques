@@ -7,8 +7,19 @@ Les assets Poly Haven sont listés dans `production/assets/assets.json` et tél�
 `npm run fetch-assets` (non versionnés, voir ADR-018) ; leurs lignes ci-dessous sont générées
 par ce script. Les autres lignes sont tenues à la main.
 
+Les modèles Sketchfab (téléchargement avec compte) sont déposés en archive dans
+`production/assets/_inbox/`, extraits dans `production/assets/sketchfab/<id>/` avec leur
+`license.txt`, et ne sont pas versionnés non plus (ADR-018). Crédit CC-BY à reprendre tel quel
+sur la page de crédits :
+
+- This work is based on "Generic passenger car pack"
+  (https://sketchfab.com/3d-models/generic-passenger-car-pack-20f9af9b8a404d5cb022ac6fe87f21f5)
+  by Comrade1280 (https://sketchfab.com/comrade1280) licensed under CC-BY-4.0
+  (http://creativecommons.org/licenses/by/4.0/)
+
 | Fichier ou dossier | Source (URL) | Auteur | Licence | Usage | Date d'ajout | Modifié ? |
 |---|---|---|---|---|---|---|
+| `production/assets/sketchfab/generic_passenger_car_pack/` | https://sketchfab.com/3d-models/generic-passenger-car-pack-20f9af9b8a404d5cb022ac6fe87f21f5 | Comrade1280 | CC-BY-4.0 | Modèle — 10 voitures génériques sans marque (stationnement, trafic) | 2026-11-17 | Non (à débadger si un détail de marque apparaît) |
 <!-- fetch-assets:begin -->
 | `production/assets/polyhaven/asphalt_02/` | https://polyhaven.com/a/asphalt_02 | Rob Tuytel | CC0 | Texture 2k — Chaussée | 2026-11-17 | Non |
 | `production/assets/polyhaven/square_concrete_pavers/` | https://polyhaven.com/a/square_concrete_pavers | Amal Kumar | CC0 | Texture 2k — Trottoir (dalles 30 × 30) | 2026-11-17 | Non |
