@@ -1,9 +1,21 @@
 # Règles de l'examen officiel
 
-> **À confirmer.** Les réponses ci-dessous viennent des sites de deux concurrents
-> (voir [benchmark.md](benchmark.md)), lus le 17/11/2026. Ils concordent entre eux, mais ce ne
-> sont pas des sources officielles. Chaque ligne doit être confirmée auprès d'un centre
-> d'examen ou d'une autorité régionale avant d'être tenue pour acquise.
+> **Retenues comme référence (ADR-013).** Les réponses ci-dessous viennent des sites de deux
+> concurrents (voir [benchmark.md](benchmark.md)), lus le 17/11/2026. Elles concordent entre
+> elles et suffisent pour construire le barème. Ce ne sont pas des sources officielles : si une
+> source officielle les contredit, on corrige le fichier de paramètres.
+
+## Barème retenu (Wallonie et Bruxelles, mode à clic)
+
+- 5 films notés, précédés de 2 films d'essai non notés
+- De 0 à 3 dangers par film, 10 au total
+- 10 clics pour tout le test ; le test s'arrête quand ils sont épuisés
+- +1 par danger cliqué pendant sa fenêtre ; seul le premier clic sur un danger compte
+- Clic hors danger : pas de point retiré, mais le clic est perdu
+- Réussite : 6/10
+
+Inconnues sans impact sur le barème (durée d'un clip, durée exacte de la fenêtre) : on fixe nos
+propres valeurs dans les annotations.
 
 Le barème du lecteur doit être **identique à l'officiel** (ADR-006). Les valeurs retenues seront
 recopiées dans `web/rules/official-be.json`.

@@ -24,11 +24,22 @@ Tous droits réservés pour le moment. Rien ne s'oppose à un changement ultéri
 
 ## Assets graphiques et sonores
 
-Sources CC0 privilégiées (aucune obligation, usage commercial permis) :
-Kenney, Quaternius, Poly Haven, ambientCG.
+Le rendu visé est réaliste (ADR-012).
+
+| Source | Licence | Usage |
+|---|---|---|
+| Poly Haven | CC0 | Textures PBR, HDRI (ciels), objets réalistes |
+| ambientCG | CC0 | Textures PBR (asphalte, pavés, façades) |
+| MakeHuman | Modèles exportés en CC0 | Piétons, cyclistes |
+| Captures de mouvement libres (ex. base CMU) | Usage libre, à vérifier par jeu de données | Animations de marche, course |
+| Kenney, Quaternius | CC0 | Prototypes et éléments secondaires seulement (style trop simple pour le rendu final) |
+
+**CC-BY accepté** : usage commercial permis, à condition de citer l'auteur. Chaque asset CC-BY
+est inscrit dans ASSETS.md, et une page « crédits » sera publiée sur le site.
 
 À éviter : licences « NC » (non commercial), « ND » (pas de modification), assets extraits de jeux,
-captures des clips officiels.
+captures des clips officiels, services gratuits mais propriétaires (ex. Mixamo) dont la licence
+peut changer.
 
 ## Points juridiques
 

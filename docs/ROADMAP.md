@@ -11,15 +11,19 @@ Les jalons sont ordonnés pour livrer au plus tôt nos différenciateurs D1 à D
 - ✅ Architecture, licences, arborescence du dépôt
 - ✅ Brouillon du format d'annotation `schema/clip.schema.json` v0 (pièges, conditions, graine)
 - ✅ Analyse de la concurrence et choix des différenciateurs (voir [benchmark.md](benchmark.md))
-- 🟡 Règles officielles (voir [exam-rules.md](exam-rules.md)) : format connu par les concurrents,
-  à confirmer auprès des sources officielles
+- ✅ Règles de l'examen retenues (voir [exam-rules.md](exam-rules.md), ADR-013)
+- ✅ Niveau de rendu : soigné et proche de l'examen officiel (ADR-012)
 - ⬜ Catalogue des dangers relu et priorisé (voir [hazard-catalog.md](hazard-catalog.md))
-- ⬜ Choix du niveau de réalisme visuel
 
-**Terminé quand** : règles confirmées avec sources officielles, schéma v0 relu.
+**Terminé quand** : catalogue relu, schéma v0 relu.
 
 ## J1 — Tranche verticale Godot, paramétrable dès le départ ⬜
 
+- **Look de référence d'abord** : une image fixe du carrefour, depuis le cockpit, au niveau de
+  qualité visé (matériaux PBR, éclairage global, HDRI, véhicules et piétons réalistes), validée
+  avant de passer à l'animation
+- Recherche des assets réalistes sous licence libre (véhicules, piétons, mobilier urbain belge),
+  inscrits dans [ASSETS.md](ASSETS.md)
 - Un carrefour urbain, le véhicule de l'élève suit un `Path3D` à vitesse scriptée
 - Cockpit : vue pare-brise, rétroviseur central et deux rétroviseurs latéraux (`SubViewport`),
   compteur, clignotants
@@ -85,8 +89,9 @@ deux graines différentes = deux clips différents.
 
 ## Questions ouvertes
 
-1. Confirmer les règles officielles par région (sources officielles).
-2. Hébergement des vidéos : avec la génération, le volume grossit vite (environ 5 à 15 Mo par clip
+1. Véhicules et piétons réalistes sous licence libre : assez nombreux et assez beaux ? (risque
+   principal du rendu, à lever en J1)
+2. Temps de rendu par clip au niveau de qualité visé, et donc nombre de clips réaliste pour D1.
+3. Hébergement des vidéos : avec la génération, le volume grossit vite (environ 5 à 15 Mo par clip
    en AV1 1080p) : CDN, stockage objet.
-3. Odoo Community (LGPLv3) ou Enterprise (propriétaire, payant).
-4. Réalisme visuel visé : low-poly soigné ou proche du photoréalisme.
+4. Odoo Community (LGPLv3) ou Enterprise (propriétaire, payant).
