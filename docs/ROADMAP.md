@@ -21,19 +21,22 @@ Les jalons sont ordonnés pour livrer au plus tôt nos différenciateurs D1 à D
 
 **Terminé quand** : catalogue relu, schéma v0 relu.
 
-## J1 — Tranche verticale Godot, paramétrable dès le départ ⬜
+## J1 — Tranche verticale Godot, paramétrable dès le départ 🟡
 
-- **Look de référence d'abord** : une image fixe du carrefour, depuis le cockpit, au niveau de
+- 🟡 **Look de référence d'abord** : une image fixe du carrefour, depuis le cockpit, au niveau de
   qualité visé (matériaux PBR, éclairage global, HDRI, véhicules et piétons réalistes), validée
-  avant de passer à l'animation
-- Recherche des assets réalistes sous licence libre (véhicules, piétons, mobilier urbain belge),
-  inscrits dans [ASSETS.md](ASSETS.md)
-- Un carrefour urbain, le véhicule de l'élève suit un `Path3D` à vitesse scriptée
-- Cockpit : vue pare-brise, rétroviseur central et deux rétroviseurs latéraux (`SubViewport`),
+  avant de passer à l'animation. Décor, ciel, cockpit et voitures en place ; piétons encore
+  provisoires
+- 🟡 Recherche des assets réalistes sous licence libre (véhicules, piétons, mobilier urbain belge),
+  inscrits dans [ASSETS.md](ASSETS.md) : 18 assets Poly Haven CC0 et le pack de 10 voitures
+  génériques (CC-BY) intégrés ; piétons Sketchfab repérés dans
+  [assets-candidates.md](assets-candidates.md), à télécharger
+- ✅ Un carrefour urbain, le véhicule de l'élève suit un `Path3D` à vitesse scriptée
+- ✅ Cockpit : vue pare-brise, rétroviseur central et deux rétroviseurs latéraux (`SubViewport`),
   compteur, clignotants
-- Un danger (piéton qui traverse) et un piège (piéton immobile sur le trottoir)
-- **Scénario paramétré** : graine aléatoire, moment du jour, météo (préparation de D1 et D5)
-- Rendu avec Movie Maker (`--write-movie`, `--fixed-fps`) et export JSON par `AnnotationRecorder`
+- ✅ Un danger (piéton qui traverse) et un piège (piéton immobile sur le trottoir), piétons provisoires
+- ✅ **Scénario paramétré** : graine aléatoire, moment du jour, météo (préparation de D1 et D5)
+- ✅ Rendu avec Movie Maker (`--write-movie`, `--fixed-fps`) et export JSON par `AnnotationRecorder`
 
 **Terminé quand** : un clip de 20 à 30 s et son JSON valide ; même graine = mêmes images ;
 deux graines différentes = deux clips différents.

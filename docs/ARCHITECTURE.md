@@ -38,7 +38,7 @@ Le projet a deux parties reliées par un seul contrat : le **format d'annotation
 - **Dangers** : chaque danger est un nœud `Hazard` (identifiant, type, fenêtre de temps, moment idéal,
   textes). Il porte une forme 3D simple (boîte ou ensemble de points) qui sert de zone cliquable.
 - **AnnotationRecorder** : à chaque image, il projette les points de la forme avec
-  `Camera3D.unproject_position`, calcule l'enveloppe convexe et vérifie par raycast que le danger n'est
+  `Camera3D.unproject_position`, en garde le rectangle englobant (4 points, ADR-018) et vérifie par raycast que le danger n'est
   pas masqué. Pour les rétroviseurs, la projection passe par la caméra du rétroviseur puis est placée
   dans le rectangle du rétroviseur à l'écran (avec l'effet miroir horizontal). Les coordonnées sont
   normalisées entre 0 et 1.

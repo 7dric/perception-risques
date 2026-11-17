@@ -16,3 +16,9 @@ Déjà disponibles :
 | `check-env.mjs` | Vérifie l'environnement (`npm run check-env`) |
 | `validate-schema.mjs` | Valide les JSON contre le schéma (`npm run validate:schema [fichiers]`) |
 | `winrun.cmd` | Lance une commande sous Windows depuis WSL (voir docs/SETUP.md) |
+| `fetch-assets.mjs` | Télécharge les assets CC0 listés dans `production/assets/assets.json` et régénère leurs lignes de `docs/ASSETS.md` |
+| `render-still.mjs` | Image fixe d'un scénario (`npm run render:still`) |
+| `render-clip.mjs` | Clip complet, JSON validé, aperçu WebM VP9 (`npm run render:clip`) |
+| `check-determinism.mjs` | Vérifie « même graine = mêmes images, deux graines = deux clips » (`npm run check:determinism`) |
+| `test-godot.mjs` | Tests unitaires GDScript (`npm run test:godot`) |
+| `lib/bins.mjs`, `lib/render.mjs` | Recherche de Godot et FFmpeg, lancement depuis WSL ou Windows |
