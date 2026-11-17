@@ -28,7 +28,13 @@ Les jalons sont ordonnés pour livrer au plus tôt nos différenciateurs D1 à D
   avant de passer à l'animation. Décor, ciel, cockpit et voitures validés le 17/11/2026 ;
   piétons réalistes et animés à intégrer
 - ⬜ Piétons réalistes animés (Renderpeople, voir [assets-candidates.md](assets-candidates.md))
-  à la place des formes provisoires ; variété de couleurs des voitures
+  à la place des formes provisoires
+- ✅ Variété : peintures des voitures (palette du parc belge), second décor
+  `--environment=residential` (rue sans marquage, toits en pente, jardinets), façades, mobilier,
+  arbres, stationnement et ciel tirés par la graine (ADR-019). Préréglage `fast` et nuit plus
+  sombre en attente de validation
+- ✅ Rendu accéléré : images envoyées directement à FFmpeg au lieu de PNG, un clip de 25 s en
+  2 min 32 s au lieu de 9 min (ADR-020)
 - 🟡 Recherche des assets réalistes sous licence libre (véhicules, piétons, mobilier urbain belge),
   inscrits dans [ASSETS.md](ASSETS.md) : 18 assets Poly Haven CC0 et le pack de 10 voitures
   génériques (CC-BY) intégrés ; piétons Sketchfab repérés dans
@@ -38,7 +44,7 @@ Les jalons sont ordonnés pour livrer au plus tôt nos différenciateurs D1 à D
   compteur, clignotants
 - ✅ Un danger (piéton qui traverse) et un piège (piéton immobile sur le trottoir), piétons provisoires
 - ✅ **Scénario paramétré** : graine aléatoire, moment du jour, météo (préparation de D1 et D5)
-- ✅ Rendu avec Movie Maker (`--write-movie`, `--fixed-fps`) et export JSON par `AnnotationRecorder`
+- ✅ Rendu vidéo direct (`--fixed-fps`, tube FFmpeg) et export JSON par `AnnotationRecorder`
 
 **Terminé quand** : un clip de 20 à 30 s et son JSON valide ; même graine = mêmes images ;
 deux graines différentes = deux clips différents.
@@ -121,6 +127,8 @@ Si J2b est concluant :
 1. Véhicules et piétons réalistes sous licence libre : assez nombreux et assez beaux ? (risque
    principal du rendu, à lever en J1)
 2. Temps de rendu par clip au niveau de qualité visé, et donc nombre de clips réaliste pour D1.
+   Mesure du 17/11/2026 (RTX 3050 Laptop) : 2 min 30 à 3 min 45 par clip de 25 s, soit environ
+   20 clips par heure ; le GPU est saturé (une seule instance à la fois).
 3. Hébergement des vidéos : avec la génération, le volume grossit vite (environ 5 à 15 Mo par clip
    en AV1 1080p) : CDN, stockage objet.
 4. Odoo Community (LGPLv3) ou Enterprise (propriétaire, payant).

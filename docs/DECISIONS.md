@@ -190,3 +190,42 @@ par une nouvelle qui y fait référence.
     SDFGI et effets temporels). Mesure du 17/11/2026 : PSNR minimal de 55 dB entre deux rendus,
     15 dB entre deux graines. Règle retenue (`npm run check:determinism`) : même graine = PSNR
     ≥ 50 dB sur chaque image ; deux graines = PSNR moyen ≤ 35 dB.
+
+## ADR-019 — Véhicules génériques repeints, second décor résidentiel
+
+- **Contexte** : J1 demande des clips variés d'une graine à l'autre (préparation de D1 et D5) ;
+  le pack de voitures n'offre qu'une couleur par modèle et un seul décor existait.
+- **Décisions** :
+  - **Véhicules génériques uniquement, sans logo ni calandre de marque** : les modèles des
+    constructeurs sont protégés ; le pack générique (CC-BY) est conservé.
+  - **Peinture recolorée par shader** (`car_paint.gdshader`) : la peinture est repérée dans
+    l'atlas de carrosserie par sa rugosité (0,06 à 0,13 sur les 10 modèles, garnitures à part) ;
+    l'ombrage cuit est conservé en rapport de luminance. Teintes pondérées comme le parc belge
+    (`Car.PAINTS`). Limite : sur quelques modèles, les jantes sont dans l'atlas et prennent la
+    teinte.
+  - **Décor paramétré** : `Crossroads` porte les dimensions et le style en propriétés d'instance ;
+    `ResidentialCrossroads` en hérite (`--environment=residential`, déjà dans l'énumération du
+    schéma). L'identifiant de clip contient le décor. Les autres décors de J4 suivront ce modèle.
+  - **Ciel** : deux HDRI par moment de la journée, choisis par un générateur dérivé de la graine
+    (le choix ne décale pas les autres tirages).
+  - `GENERATOR_VERSION` 0.2.0 : une même graine ne donne plus le même clip qu'en 0.1.0.
+
+## ADR-020 — Rendu vidéo direct, préréglages de qualité, une instance
+
+- **Contexte** : un clip de 25 s coûtait 9 min (ADR-018). Mesure (`npm run bench:render`) :
+  631 ms par image, dont 500 ms d'écriture PNG par Movie Maker ; le rendu 3D seul prend 130 ms.
+- **Décisions** :
+  - **Images envoyées directement à FFmpeg** (`FfmpegPipe`, `--movie=<fichier.mkv>`) : Movie
+    Maker choisit son format avant l'exécution de tout script, on ne peut pas y brancher un
+    format maison ; `Scenario` lit donc l'image après chaque rendu et l'écrit dans le tube de
+    FFmpeg, qui encode en parallèle. Résultat : 151 ms par image, 2 min 32 s par clip.
+  - **Master sans perte FFV1** (RGB, environ 1,6 Go par clip, fichier de travail) pour les
+    contrôles et l'encodage final de J3, et **aperçu H.264** : NVENC si le pilote le permet
+    (FFmpeg 9 demande un pilote NVIDIA ≥ 570), sinon libx264. Le déterminisme se vérifie sur les
+    masters (MD5 par image, PSNR).
+  - **Préréglage `--quality=fast`** (rendu ×1,5, MSAA 4×, rétroviseurs ×1, ombres moyennes,
+    SSR 64 pas) : 81 ms de rendu au lieu de 130, briques un peu moins nettes et ombres de
+    contact plus claires. La qualité `reference` reste le défaut en attendant la validation.
+  - **Une instance Godot à la fois** : une instance occupe 4,2 Go de mémoire vidéo et 80 à 87 %
+    du GPU ; deux instances sont 3 fois plus lentes. `render-batch` enchaîne les clips.
+  - Vsync désactivée dans le projet (outil de production, sans écran).

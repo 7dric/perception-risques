@@ -9,7 +9,7 @@ Le projet a deux parties reliées par un seul contrat : le **format d'annotation
 │     │                                                                    │
 │     ▼                                                                    │
 │  Simulation déterministe Godot 4 (--fixed-fps 30)                        │
-│     ├─► Movie Maker (--write-movie) : images + audio                     │
+│     ├─► images → tube FFmpeg : master FFV1 + aperçu H.264 (ADR-020)      │
 │     └─► AnnotationRecorder : polygones 2D des dangers, image par image   │
 │     │                                                                    │
 │     ▼                                                                    │
