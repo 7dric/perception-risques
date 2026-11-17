@@ -1,14 +1,20 @@
 # Contact sheet of the car models, to check their orientation and scale (needs rendering).
-# godot --path production --script res://tests/car_sheet.gd -- --out=C:/.../cars.png
+# godot --path production --script res://tests/car_sheet.gd -- --out=C:/.../cars.png [--paint=noir]
 # Every car should face the camera (front bumper towards -Z, i.e. towards the viewer).
+# --paint: repaints every car with that Car.PAINTS colour (checks car_paint.gdshader).
 extends SceneTree
 
 
 func _initialize() -> void:
 	var out := ""
+	var paint: Array = []
 	for a in OS.get_cmdline_user_args():
 		if a.begins_with("--out="):
 			out = a.trim_prefix("--out=")
+		if a.begins_with("--paint="):
+			for p in Car.PAINTS:
+				if p[0] == a.trim_prefix("--paint="):
+					paint = p
 	var world := Node3D.new()
 	root.add_child(world)
 	var env := Environment.new()
@@ -37,6 +43,8 @@ func _initialize() -> void:
 		var car: Node3D = m.template.duplicate()
 		car.position = Vector3(x, 0, 0)
 		world.add_child(car)
+		if not paint.is_empty():
+			Car.apply_paint(car, m, paint)
 		print("CAR|%s|l=%.2f w=%.2f h=%.2f" % [m.name, m.size.z, m.size.x, m.size.y])
 		x += m.size.x + 1.6
 	var cam := Camera3D.new()

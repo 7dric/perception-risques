@@ -6,6 +6,9 @@ class_name CarLibrary
 ## origin in the middle of the front bumper on the ground, facing -Z, body along +Z.
 
 const PACK := "res://assets/sketchfab/generic_passenger_car_pack/scene.gltf"
+const PAINT_SHADER := preload("res://actors/car_paint.gdshader")
+## Roughness interval of the paint in the metallic-roughness textures (see car_paint.gdshader).
+const PAINT_ROUGH := Vector2(0.055, 0.135)
 
 ## Body node name -> [weight in Belgian city traffic, flip the axis found from the wheels].
 ## The flip is set by checking the contact sheet (tests/car_sheet.gd).
@@ -23,7 +26,7 @@ const MODELS := {
 }
 
 ## One entry per model: {"name", "weight", "template": Node3D, "size": Vector3 (w, h, length),
-## "body_materials": Array[Material]}
+## "body_materials": Array[Material], "paint": ShaderMaterial (car_paint.gdshader, to duplicate)}
 static var _models: Array = []
 
 
@@ -165,7 +168,46 @@ static func _make_model(name: String, body_meshes: Array, wheel_groups: Array, f
 		"template": template,
 		"size": Vector3(hi.x - lo.x, hi.y, hi.z - lo.z),
 		"body_materials": body_mats,
+		"paint": _paint_material(body_mats[0]) if not body_mats.is_empty() else null,
 	}
+
+
+## Paint material of a model, built from its original body material. Measures the average
+## luminance of the original paint, so that the shader keeps the baked shading as a ratio.
+static func _paint_material(src: BaseMaterial3D) -> ShaderMaterial:
+	var albedo := src.albedo_texture
+	var mr: Texture2D = (src as ORMMaterial3D).orm_texture if src is ORMMaterial3D else src.roughness_texture
+	if albedo == null or mr == null:
+		push_warning("CarLibrary : matériau de carrosserie sans textures (%s)" % src.resource_name)
+		return null
+	var a := _small(albedo)
+	var m := _small(mr)
+	var sum := 0.0
+	var n := 0
+	for y in a.get_height():
+		for x in a.get_width():
+			var r := m.get_pixel(x, y).g
+			if r > PAINT_ROUGH.x and r < PAINT_ROUGH.y:
+				sum += a.get_pixel(x, y).srgb_to_linear().get_luminance()
+				n += 1
+	var mat := ShaderMaterial.new()
+	mat.shader = PAINT_SHADER
+	mat.set_shader_parameter("albedo_tex", albedo)
+	mat.set_shader_parameter("mr_tex", mr)
+	if src.normal_enabled and src.normal_texture:
+		mat.set_shader_parameter("normal_tex", src.normal_texture)
+		mat.set_shader_parameter("use_normal", true)
+	mat.set_shader_parameter("ref_luma", sum / n if n > 0 else 0.3)
+	mat.set_shader_parameter("paint_rough", PAINT_ROUGH)
+	return mat
+
+
+static func _small(tex: Texture2D) -> Image:
+	var img := tex.get_image()
+	if img.is_compressed():
+		img.decompress()
+	img.resize(128, 128, Image.INTERPOLATE_NEAREST)
+	return img
 
 
 static func _copy(mi: MeshInstance3D, xf: Transform3D) -> MeshInstance3D:

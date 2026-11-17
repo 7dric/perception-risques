@@ -60,7 +60,7 @@ export function godot(args, movie = {}) {
   const env = {
     ...process.env,
     PR_FFMPEG: ffmpegBin ?? "",
-    PR_MOVIE_PREVIEW: movie.preview === false || !ffmpegBin ? "0" : previewEncoder(),
+    PR_MOVIE_PREVIEW: movie.preview === false || !ffmpegBin || !args.some((a) => a.startsWith("--movie=")) ? "0" : previewEncoder(),
     WSLENV: [process.env.WSLENV, "PR_FFMPEG/p", "PR_MOVIE_PREVIEW"].filter(Boolean).join(":"),
   };
   const res = spawnSync(bin, ["--path", winPath(join(ROOT, "production")), ...args], { encoding: "utf8", maxBuffer: 1 << 28, env });

@@ -12,7 +12,7 @@ extends Node3D
 ##   saves one PNG and quits.
 
 const FPS := 30
-const GENERATOR_VERSION := "0.1.0"
+const GENERATOR_VERSION := "0.2.0"
 ## Frames rendered before saving a still, so that SDFGI and the shadows converge.
 const STILL_SETTLE_FRAMES := 120
 
