@@ -1,7 +1,8 @@
 extends Scenario
-## J1 vertical slice: urban crossroads, a pedestrian crosses at the zebra in front of the
-## learner (pedestrian_crossing) while another one waits on the right sidewalk, back to the
-## road (decoy_pedestrian_static).
+## J1 vertical slice: crossroads, a pedestrian crosses in front of the learner
+## (pedestrian_crossing; at the zebra in the urban street, without zebra in the residential
+## one) while another one waits on the right sidewalk, back to the road
+## (decoy_pedestrian_static). Scenery from --environment (Crossroads, ResidentialCrossroads).
 ##
 ## Timeline (seconds, varied by the seed):
 ##   t_cue       the pedestrian, walking along the left sidewalk, turns towards the road
@@ -14,10 +15,11 @@ extends Scenario
 const CRUISE := 30.0 / 3.6         ## zone 30
 const BRAKE := 2.5
 const ACCEL := 1.5
-const EGO_X := Crossroads.LANE / 2.0
 const PATH_END_Z := -135.0
 const LEFT_CLEAR := 22.0
 
+var world: Crossroads
+var ego_x := 0.0
 var ego_follow: PathFollow3D
 var ego_profile: SpeedProfile
 var follower: Car
@@ -30,28 +32,36 @@ var follower_gap := 9.0
 
 func _init() -> void:
 	scenario_id = "urban_crossroads_pedestrian"
-	title_fr = "Carrefour urbain, piéton au passage"
-	environment_kind = "urban"
+	title_fr = "Carrefour, piéton qui traverse"
 	duration_frames = 750
 
 
 func _build() -> void:
-	var world := Crossroads.new()
+	world = ResidentialCrossroads.new() if params.environment == "residential" else Crossroads.new()
 	world.name = "Crossroads"
-	add_child(world)
-	world.build(rng)
-	conditions = Conditions.new()
-	conditions.name = "Conditions"
-	add_child(conditions)
-	conditions.apply(params, world.lamp_heads)
+	ego_x = world.lane / 2.0
+	title_fr = "Carrefour %s, piéton qui traverse" % ("résidentiel" if params.environment == "residential" else "urbain")
 
 	# --- Timings from the seed -----------------------------------------------------------
 	var t_cue := rng.randf_range(9.0, 11.0)
 	var t_conflict := t_cue + rng.randf_range(5.5, 6.5)
 	var walk := rng.randf_range(1.1, 1.4)
 	var cross := rng.randf_range(1.3, 1.6)
-	var zebra_near := Crossroads.CROSSWALK_Z + Crossroads.CROSSWALK_W / 2.0
-	var cross_z := Crossroads.CROSSWALK_Z + rng.randf_range(-1.0, 1.0)
+	var zebra_near := world.crosswalk_z + Crossroads.CROSSWALK_W / 2.0
+	var cross_z := world.crosswalk_z + rng.randf_range(-1.0, 1.0)
+	var wait_z := rng.randf_range(35.0, 70.0)
+
+	# --- World: no tree nor shrub where the two pedestrians must stay visible ----------------
+	world.keep_clear(cross_z - 4.0, cross_z + walk * t_cue + 4.0)
+	world.keep_clear(wait_z - 8.0, wait_z + 8.0)
+	add_child(world)
+	world.build(rng)
+	conditions = Conditions.new()
+	conditions.name = "Conditions"
+	add_child(conditions)
+	conditions.apply(params, world.lamp_heads)
+	var road_half := world.road_half
+	var curb_h := Crossroads.CURB_H
 
 	# --- Learner's car on a Path3D --------------------------------------------------------
 	var start_z := zebra_near + CRUISE * t_conflict
@@ -59,22 +69,23 @@ func _build() -> void:
 	var t_brake := (stop_s - CRUISE * CRUISE / (2.0 * BRAKE)) / CRUISE
 
 	# --- Crossing pedestrian --------------------------------------------------------------
-	var sidewalk_x := -(Crossroads.ROAD_HALF + 1.4)
-	var cue_point := Vector3(sidewalk_x, Crossroads.CURB_H, cross_z)
+	var sidewalk_x := -(road_half + world.sidewalk * 0.55)
+	var cue_point := Vector3(sidewalk_x, curb_h, cross_z)
 	var tl := Timeline.new()
 	tl.add(0.0, cue_point + Vector3(0, 0, walk * t_cue))   # walking away from us, towards the zebra
 	tl.add(t_cue, cue_point)
-	tl.walk_to(Vector3(-Crossroads.ROAD_HALF + 0.1, Crossroads.CURB_H, cross_z), cross + 0.3)
-	tl.walk_to(Vector3(-Crossroads.ROAD_HALF - 0.1, 0.0, cross_z), cross)
-	tl.walk_to(Vector3(Crossroads.ROAD_HALF - 0.1, 0.0, cross_z), cross)
-	tl.walk_to(Vector3(Crossroads.ROAD_HALF + 0.1, Crossroads.CURB_H, cross_z), cross)
-	tl.walk_to(Vector3(Crossroads.ROAD_HALF + 1.5, Crossroads.CURB_H, cross_z - 1.5), walk)
-	tl.walk_to(Vector3(Crossroads.ROAD_HALF + 1.5, Crossroads.CURB_H, -60.0), walk)
+	tl.walk_to(Vector3(-road_half + 0.1, curb_h, cross_z), cross + 0.3)
+	tl.walk_to(Vector3(-road_half - 0.1, 0.0, cross_z), cross)
+	tl.walk_to(Vector3(road_half - 0.1, 0.0, cross_z), cross)
+	tl.walk_to(Vector3(road_half + 0.1, curb_h, cross_z), cross)
+	var far_walk := road_half + world.sidewalk * 0.55
+	tl.walk_to(Vector3(far_walk, curb_h, cross_z - 1.5), walk)
+	tl.walk_to(Vector3(far_walk, curb_h, -60.0), walk)
 	crossing = _pedestrian("CrossingPedestrian", tl, Vector3.FORWARD)
-	var t_clear := tl.time_at_x(Crossroads.LANE + 0.6)
+	var t_clear := tl.time_at_x(world.lane + 0.6)
 	_hazard(crossing, "h1", "pedestrian_crossing", false, t_cue, t_conflict - 2.0,
 		"Piéton qui traverse",
-		"Le piéton qui marchait sur le trottoir de gauche se tourne vers la route et s'engage sur le passage. Il fallait le repérer dès qu'il s'est tourné vers la chaussée.",
+		"Le piéton qui marchait sur le trottoir de gauche se tourne vers la route et s'engage %s. Il fallait le repérer dès qu'il s'est tourné vers la chaussée." % ("sur le passage" if world.has_zebra else "sur la chaussée"),
 		["vulnerable_user", "distraction"])
 
 	var restart := maxf(t_brake + CRUISE / BRAKE, t_clear + 0.8)
@@ -86,8 +97,8 @@ func _build() -> void:
 	var path := Path3D.new()
 	path.name = "EgoPath"
 	var curve := Curve3D.new()
-	curve.add_point(Vector3(EGO_X, 0, start_z))
-	curve.add_point(Vector3(EGO_X, 0, PATH_END_Z))
+	curve.add_point(Vector3(ego_x, 0, start_z))
+	curve.add_point(Vector3(ego_x, 0, PATH_END_Z))
 	path.curve = curve
 	add_child(path)
 	ego_follow = PathFollow3D.new()
@@ -99,7 +110,7 @@ func _build() -> void:
 	ego_follow.add_child(cockpit)   # the follower's -Z points along the path, like the car
 
 	# --- Decoy: pedestrian waiting on the right sidewalk, back to the road -----------------
-	var wait_point := Vector3(Crossroads.ROAD_HALF + 1.9, Crossroads.CURB_H, rng.randf_range(35.0, 70.0))
+	var wait_point := Vector3(road_half + world.sidewalk * 0.7, curb_h, wait_z)
 	var wl := Timeline.new().add(0.0, wait_point).wait(60.0)
 	waiting = _pedestrian("WaitingPedestrian", wl, Vector3.RIGHT)
 	_hazard(waiting, "d1", "decoy_pedestrian_static", true, 0.0, 0.0, "",
@@ -122,7 +133,7 @@ func _pose(f: int, t: float) -> void:
 	follower.position = (ego_follow.get_parent() as Path3D).curve.sample_baked(clampf(fs, -200.0, curve_len))
 	if fs < 0.0:
 		follower.position.z -= fs
-	oncoming.position = Vector3(-EGO_X, 0, oncoming_start_z + CRUISE * t)
+	oncoming.position = Vector3(-ego_x, 0, oncoming_start_z + CRUISE * t)
 	oncoming.rotation.y = PI
 	crossing.pose_at(t)
 	waiting.pose_at(t)
@@ -168,26 +179,26 @@ func _car(node_name: String, collide: bool) -> Car:
 ## so that the decoy can be seen.
 func _park_cars(start_z: float, stop_z: float) -> void:
 	for sx: float in [-1.0, 1.0]:
-		var z := Crossroads.CROSSWALK_Z + Crossroads.CROSSWALK_W / 2.0 + 5.0 + rng.randf_range(0.0, 3.0)
+		var z := world.crosswalk_z + Crossroads.CROSSWALK_W / 2.0 + 5.0 + rng.randf_range(0.0, 3.0)
 		while z < start_z + 30.0:
 			var at_stop := sx > 0 and z + Car.LENGTH > stop_z - 12.0 and z < stop_z + 6.0
 			# Left side: no parking on the 22 m before the zebra, so that the crossing pedestrian
 			# stays visible from the start of the window (docs/hazard-catalog.md, rule 1).
-			var before_zebra := sx < 0 and z < Crossroads.CROSSWALK_Z + LEFT_CLEAR
+			var before_zebra := sx < 0 and z < world.crosswalk_z + LEFT_CLEAR
 			var length := Car.LENGTH
-			if rng.randf() < 0.8 and not at_stop and not before_zebra:
+			if rng.randf() < world.parking_density and not at_stop and not before_zebra:
 				var c := _car("Parked", true)
 				length = c.length
-				c.position = Vector3(sx * (Crossroads.LANE + Crossroads.PARKING / 2.0), 0, z)
+				c.position = Vector3(sx * (world.lane + world.parking / 2.0), 0, z)
 				c.rotation.y = 0.0 if sx > 0 else PI
 				if sx < 0:
 					c.position.z += length
 			z += length + rng.randf_range(0.8, 2.5)
-		z = -Crossroads.FACADE - 3.0 - rng.randf_range(0.0, 3.0)
+		z = -world.facade - 3.0 - rng.randf_range(0.0, 3.0)
 		while z > Crossroads.MAIN_FROM + 10.0:
 			var length := Car.LENGTH
-			if rng.randf() < 0.7:
+			if rng.randf() < world.parking_density * 0.9:
 				var c := _car("Parked", true)
 				length = c.length
-				c.position = Vector3(sx * (Crossroads.LANE + Crossroads.PARKING / 2.0), 0, z - length)
+				c.position = Vector3(sx * (world.lane + world.parking / 2.0), 0, z - length)
 			z -= length + rng.randf_range(0.8, 2.5)

@@ -5,18 +5,21 @@ extends Node3D
 
 const HDRI := "res://assets/polyhaven/%s/%s_4k.hdr"
 
-## Sky per (time of day, weather), with the sun strength and the exposure.
+## Sky per (time of day, weather), with the sun strength and the exposure. "hdri" lists the
+## variants: one is picked from the seed (D5: same condition, different skies).
 const SKIES := {
-	"day": {"hdri": "kloofendal_48d_partly_cloudy_puresky", "sun": 2.2, "exposure": 1.0},
-	"day_overcast": {"hdri": "kloofendal_overcast_puresky", "sun": 0.0, "exposure": 1.25},
-	"low_sun": {"hdri": "syferfontein_6d_clear_puresky", "sun": 2.0, "exposure": 1.0},
-	"dawn": {"hdri": "qwantani_sunrise_puresky", "sun": 1.2, "exposure": 1.4},
-	"dusk": {"hdri": "qwantani_dusk_2_puresky", "sun": 0.6, "exposure": 1.6},
-	"night": {"hdri": "qwantani_night_puresky", "sun": 0.0, "exposure": 2.5},
+	"day": {"hdri": ["kloofendal_48d_partly_cloudy_puresky", "kloppenheim_05_puresky"], "sun": 2.2, "exposure": 1.0},
+	"day_overcast": {"hdri": ["kloofendal_overcast_puresky", "overcast_soil_puresky"], "sun": 0.0, "exposure": 1.25},
+	"low_sun": {"hdri": ["syferfontein_6d_clear_puresky", "syferfontein_1d_clear_puresky"], "sun": 2.0, "exposure": 1.0},
+	"dawn": {"hdri": ["qwantani_sunrise_puresky", "qwantani_dawn_puresky"], "sun": 1.2, "exposure": 1.4},
+	"dusk": {"hdri": ["qwantani_dusk_2_puresky", "belfast_sunset_puresky"], "sun": 0.6, "exposure": 1.6},
+	"night": {"hdri": ["qwantani_night_puresky", "kloppenheim_02_puresky"], "sun": 0.0, "exposure": 0.25},
 }
 
 var time_of_day := "day"
 var weather := "clear"
+## Poly Haven id of the sky in use.
+var hdri := ""
 var environment: Environment
 var sun: DirectionalLight3D
 var rain: GPUParticles3D
@@ -27,7 +30,13 @@ func apply(params: ScenarioParams, lamp_heads: Array[Vector3]) -> void:
 	weather = params.weather
 	var key := _sky_key()
 	var sky_def: Dictionary = SKIES[key]
-	var panorama: Texture2D = load(HDRI % [sky_def.hdri, sky_def.hdri])
+	# Own generator: the sky choice does not shift the other random draws of the scenario.
+	var sky_rng := RandomNumberGenerator.new()
+	sky_rng.seed = hash("sky:%d" % params.rng_seed)
+	var variants: Array = sky_def.hdri
+	hdri = variants[sky_rng.randi() % variants.size()]
+	print("SKY|%s" % hdri)
+	var panorama: Texture2D = load(HDRI % [hdri, hdri])
 	_build_environment(panorama, sky_def)
 	_build_sun(panorama, sky_def)
 	if weather in ["rain", "fog"]:
@@ -170,7 +179,7 @@ func follow(camera_pos: Vector3) -> void:
 
 
 func _build_street_lights(heads: Array[Vector3]) -> void:
-	var energy := 3.0 if time_of_day == "night" else 1.2
+	var energy := 14.0 if time_of_day == "night" else 1.2
 	for p in heads:
 		var light := OmniLight3D.new()
 		light.position = p

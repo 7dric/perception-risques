@@ -4,28 +4,162 @@
     "resolution": "2k",
     "added": "2026-11-17",
     "textures": [
-      { "id": "asphalt_02", "use": "Chaussée" },
-      { "id": "square_concrete_pavers", "use": "Trottoir (dalles 30 × 30)" },
-      { "id": "granular_concrete", "use": "Bordures" },
-      { "id": "red_brick_03", "use": "Façade en brique rouge" },
-      { "id": "brown_brick_02", "use": "Façade en brique brune" },
-      { "id": "whitewashed_brick", "use": "Façade en brique peinte" },
-      { "id": "plaster_grey_04", "use": "Façade enduite" }
+      {
+        "id": "asphalt_02",
+        "use": "Chaussée"
+      },
+      {
+        "id": "square_concrete_pavers",
+        "use": "Trottoir (dalles 30 × 30)"
+      },
+      {
+        "id": "granular_concrete",
+        "use": "Bordures"
+      },
+      {
+        "id": "red_brick_03",
+        "use": "Façade en brique rouge"
+      },
+      {
+        "id": "brown_brick_02",
+        "use": "Façade en brique brune"
+      },
+      {
+        "id": "whitewashed_brick",
+        "use": "Façade en brique peinte"
+      },
+      {
+        "id": "plaster_grey_04",
+        "use": "Façade enduite"
+      },
+      {
+        "id": "red_bricks_04",
+        "use": "Façade en brique rouge foncé"
+      },
+      {
+        "id": "large_red_bricks",
+        "use": "Façade en grandes briques rouges"
+      },
+      {
+        "id": "beige_wall_001",
+        "use": "Façade enduite beige"
+      },
+      {
+        "id": "grey_roof_tiles",
+        "use": "Toiture en ardoises (rue résidentielle)"
+      },
+      {
+        "id": "clay_roof_tiles_02",
+        "use": "Toiture en tuiles (rue résidentielle)"
+      },
+      {
+        "id": "leafy_grass",
+        "use": "Pelouse des jardinets"
+      }
     ],
     "hdris": [
-      { "id": "kloofendal_48d_partly_cloudy_puresky", "resolution": "4k", "use": "Jour, ciel partiellement nuageux" },
-      { "id": "kloofendal_overcast_puresky", "resolution": "4k", "use": "Jour couvert, pluie, brouillard" },
-      { "id": "qwantani_dusk_2_puresky", "resolution": "4k", "use": "Crépuscule" },
-      { "id": "qwantani_sunrise_puresky", "resolution": "4k", "use": "Aube" },
-      { "id": "qwantani_night_puresky", "resolution": "4k", "use": "Nuit" },
-      { "id": "syferfontein_6d_clear_puresky", "resolution": "4k", "use": "Soleil rasant" }
+      {
+        "id": "kloofendal_48d_partly_cloudy_puresky",
+        "resolution": "4k",
+        "use": "Jour, ciel partiellement nuageux"
+      },
+      {
+        "id": "kloofendal_overcast_puresky",
+        "resolution": "4k",
+        "use": "Jour couvert, pluie, brouillard"
+      },
+      {
+        "id": "qwantani_dusk_2_puresky",
+        "resolution": "4k",
+        "use": "Crépuscule"
+      },
+      {
+        "id": "qwantani_sunrise_puresky",
+        "resolution": "4k",
+        "use": "Aube"
+      },
+      {
+        "id": "qwantani_night_puresky",
+        "resolution": "4k",
+        "use": "Nuit"
+      },
+      {
+        "id": "syferfontein_6d_clear_puresky",
+        "resolution": "4k",
+        "use": "Soleil rasant"
+      },
+      {
+        "id": "kloppenheim_05_puresky",
+        "resolution": "4k",
+        "use": "Jour, ciel partiellement nuageux (variante)"
+      },
+      {
+        "id": "overcast_soil_puresky",
+        "resolution": "4k",
+        "use": "Jour couvert (variante)"
+      },
+      {
+        "id": "syferfontein_1d_clear_puresky",
+        "resolution": "4k",
+        "use": "Soleil rasant (variante)"
+      },
+      {
+        "id": "qwantani_dawn_puresky",
+        "resolution": "4k",
+        "use": "Aube (variante)"
+      },
+      {
+        "id": "belfast_sunset_puresky",
+        "resolution": "4k",
+        "use": "Crépuscule (variante)"
+      },
+      {
+        "id": "kloppenheim_02_puresky",
+        "resolution": "4k",
+        "use": "Nuit (variante)"
+      }
     ],
     "models": [
-      { "id": "modular_urban_apartments_facade", "use": "Façades d'immeubles en brique" },
-      { "id": "street_lamp_01", "use": "Lampadaire" },
-      { "id": "metal_trash_can", "use": "Poubelle" },
-      { "id": "modular_street_seating", "use": "Banc" },
-      { "id": "planter_box_01", "use": "Bac à fleurs" }
+      {
+        "id": "modular_urban_apartments_facade",
+        "use": "Façades d'immeubles en brique"
+      },
+      {
+        "id": "street_lamp_01",
+        "use": "Lampadaire"
+      },
+      {
+        "id": "metal_trash_can",
+        "use": "Poubelle"
+      },
+      {
+        "id": "modular_street_seating",
+        "use": "Banc"
+      },
+      {
+        "id": "planter_box_01",
+        "use": "Bac à fleurs"
+      },
+      {
+        "id": "tree_small_02",
+        "use": "Arbre d'alignement"
+      },
+      {
+        "id": "shrub_02",
+        "use": "Arbuste de jardinet"
+      },
+      {
+        "id": "shrub_04",
+        "use": "Arbuste de jardinet"
+      },
+      {
+        "id": "street_lamp_02",
+        "use": "Lampadaire de rue résidentielle"
+      },
+      {
+        "id": "planter_box_02",
+        "use": "Bac à fleurs"
+      }
     ]
   }
 }

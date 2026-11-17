@@ -19,6 +19,8 @@ try {
   ]);
   const line = out.split("\n").find((l) => l.startsWith("STILL|"));
   if (!line?.endsWith("|OK")) throw new Error("Image non enregistrée");
+  const sky = out.split("\n").find((l) => l.startsWith("SKY|"));
+  if (sky) console.log(`Ciel : ${sky.slice(4)}`);
   console.log(png);
 } catch (e) {
   console.error(e.message);

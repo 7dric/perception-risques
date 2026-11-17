@@ -91,7 +91,7 @@ export function scenarioArgs(opts) {
 }
 
 export function clipId(opts) {
-  return `${opts.scenario}-s${opts.seed}-${opts.time}-${opts.weather}`.replaceAll("_", "-");
+  return `${opts.scenario}-s${opts.seed}-${opts.environment ?? "urban"}-${opts.time}-${opts.weather}`.replaceAll("_", "-");
 }
 
 /** Sorted list of the frame PNGs written by Movie Maker in a folder. */

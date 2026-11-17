@@ -18,7 +18,6 @@ const STILL_SETTLE_FRAMES := 120
 
 var scenario_id := "scenario"
 var title_fr := ""
-var environment_kind := "urban"
 var duration_frames := 750
 
 var params: ScenarioParams
@@ -148,7 +147,7 @@ func _write_annotations() -> void:
 
 ## Identifier of the clip: scenario, seed and conditions (schema pattern ^[a-z0-9][a-z0-9-]*$).
 func clip_id() -> String:
-	return ("%s-s%d-%s-%s" % [scenario_id, params.rng_seed, params.time_of_day, params.weather]).replace("_", "-")
+	return ("%s-s%d-%s-%s-%s" % [scenario_id, params.rng_seed, params.environment, params.time_of_day, params.weather]).replace("_", "-")
 
 
 # --- Quality presets (--quality) ------------------------------------------------------------
