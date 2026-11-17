@@ -23,10 +23,12 @@ Les jalons sont ordonnés pour livrer au plus tôt nos différenciateurs D1 à D
 
 ## J1 — Tranche verticale Godot, paramétrable dès le départ 🟡
 
-- 🟡 **Look de référence d'abord** : une image fixe du carrefour, depuis le cockpit, au niveau de
+- ✅ **Look de référence d'abord** : une image fixe du carrefour, depuis le cockpit, au niveau de
   qualité visé (matériaux PBR, éclairage global, HDRI, véhicules et piétons réalistes), validée
-  avant de passer à l'animation. Décor, ciel, cockpit et voitures en place ; piétons encore
-  provisoires
+  avant de passer à l'animation. Décor, ciel, cockpit et voitures validés le 17/11/2026 ;
+  piétons réalistes et animés à intégrer
+- ⬜ Piétons réalistes animés (Renderpeople, voir [assets-candidates.md](assets-candidates.md))
+  à la place des formes provisoires ; variété de couleurs des voitures
 - 🟡 Recherche des assets réalistes sous licence libre (véhicules, piétons, mobilier urbain belge),
   inscrits dans [ASSETS.md](ASSETS.md) : 18 assets Poly Haven CC0 et le pack de 10 voitures
   génériques (CC-BY) intégrés ; piétons Sketchfab repérés dans
